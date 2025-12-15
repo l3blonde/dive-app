@@ -23,8 +23,13 @@ But for learning, here's each dependency explained individually:
 
 **Install:**
 \`\`\`bash
-npm install next@16.0.7
+npm install next@16.0.10
 \`\`\`
+
+**Install Latest Version:**
+\`\`\`bash
+npm install next@latest
+
 
 **Check version:**
 \`\`\`bash
