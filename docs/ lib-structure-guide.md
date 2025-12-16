@@ -2,10 +2,20 @@
 
 ## Why lib/ Exists
 
-The `lib/` directory holds all the business logic, data utilities,
+The `lib/` directory is shortly for "library". 
+It holds all the data structures, connections,
 and helper functions that power our dive app.
-We separate these from components to keep code organised, reusable, and testable.
-Lib/ is like the engine room while components/ is the user-facing deck.
+We separate these from components to keep code organised,
+reusable, and testable.
+Lib/ is like the engine room
+while components/ is the user-facing deck.
+
+**Why use a lib folder?**
+-**Don't Repeat Yourself (DRY) Principle**:
+1.Write code once, use it everywhere
+2.If you need to change something,
+change it in one place
+3.Organize code into reusable models
 
 ## Directory Structure Breakdown
 
@@ -23,6 +33,9 @@ lib/
 \`\`\`
 
 ---
+
+##lib/supabase.ts - Database Connection
+This file creates a connection to our database so our app can read and write data.
 
 ## 1. lib/data/marine-species.ts
 
