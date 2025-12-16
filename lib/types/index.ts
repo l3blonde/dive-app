@@ -13,7 +13,7 @@ export interface DiveSite {
     best_season: string
     local_name?: string
     country?: string
-    marine_life?: string // JSON string array of species names like '["whale-shark","manta-ray"]'
+    marine_life?: string // JSON string array of species names
     rating?: number
     created_at?: string
     image_url?: string
