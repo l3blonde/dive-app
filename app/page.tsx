@@ -2,7 +2,7 @@
 
 import dynamic from "next/dynamic"
 
-const DiveMap = dynamic(() => import("@/components/dive-map").then((mod) => ({ default: mod.DiveMap })), {
+const DiveMap = dynamic(() => import("@/components/dive-map").then((mod) => mod.DiveMap), {
     ssr: false,
     loading: () => (
         <div className="flex h-screen items-center justify-center bg-blue-50">

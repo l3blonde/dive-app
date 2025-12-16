@@ -1,22 +1,18 @@
-export function getDifficultyIcon(difficulty: string): string {
+import { User, Waves, Anchor, type LucideIcon } from "lucide-react"
+
+/**
+ * Returns the appropriate Lucide icon component for dive difficulty level
+ * Used to display visual skill indicators on dive site cards
+ */
+export function getDifficultyIcon(difficulty: string): LucideIcon {
     switch (difficulty.toLowerCase()) {
         case "beginner":
-            return "🏊"
+            return User // Person icon for entry-level dives
         case "intermediate":
-            return "🤿"
+            return Waves // Waves icon for moderate skill dives
         case "advanced":
-            return "⚓"
+            return Anchor // Anchor icon for expert-level dives
         default:
-            return "🏊"
+            return User // Fallback to person icon if unknown
     }
-}
-
-export function getUnsplashImageForSite(siteName: string): string {
-    const imageMap: { [key: string]: string } = {
-        "Bitter Springs": "https://images.unsplash.com/photo-1559827260-dc66d52bef19?w=800&q=80",
-        "The Cathedral": "https://images.unsplash.com/photo-1682687220742-aba13b6e50ba?w=800&q=80",
-        "Coral Gardens": "https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=800&q=80",
-    }
-
-    return imageMap[siteName] || "https://images.unsplash.com/photo-1682687220063-4742bd7fd538?w=800&q=80"
 }
