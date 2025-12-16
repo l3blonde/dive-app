@@ -1,6 +1,5 @@
 @import "tailwindcss";
 @import "mapbox-gl/dist/mapbox-gl.css";
-/* Removed tw-animate-css import - package not installed */
 
 @custom-variant dark (&:is(.dark *));
 
@@ -76,7 +75,6 @@
 }
 
 @theme inline {
-    /* optional: --font-sans, --font-serif, --font-mono if they are applied in the layout.tsx */
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
@@ -123,7 +121,6 @@
         @apply bg-background text-foreground;
     }
 
-    /* Ensure html and body fill viewport for full-screen map */
     html,
     body {
         @apply h-full w-full;
