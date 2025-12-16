@@ -194,8 +194,8 @@ export function SitePopup({
                         borderRadius: "16px",
                         overflow: "hidden",
                         background: "white",
-                        zIndex: 20, // Added z-index to establish stacking context
-                        pointerEvents: "auto", // Ensure clicks work on back face
+                        zIndex: 20,
+                        pointerEvents: "auto",
                     }}
                 >
                     {/* Back button */}

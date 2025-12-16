@@ -17,13 +17,13 @@ export function SiteCarousel({ sites, onCardClick, onClose, getDifficultyIcon, o
     const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null)
 
     useEffect(() => {
-        console.log("[v0] ===== CAROUSEL MOUNTED =====")
-        console.log("[v0] Sites count:", sites.length)
-        console.log("[v0] Scroll container ref:", scrollContainerRef.current)
+        console.log("===== CAROUSEL MOUNTED =====")
+        console.log("Sites count:", sites.length)
+        console.log("Scroll container ref:", scrollContainerRef.current)
 
         if (scrollContainerRef.current) {
             const rect = scrollContainerRef.current.getBoundingClientRect()
-            console.log("[v0] Scroll container dimensions:", {
+            console.log("Scroll container dimensions:", {
                 width: rect.width,
                 height: rect.height,
                 top: rect.top,
@@ -31,7 +31,7 @@ export function SiteCarousel({ sites, onCardClick, onClose, getDifficultyIcon, o
                 bottom: rect.bottom,
                 right: rect.right,
             })
-            console.log("[v0] Scroll container computed style:")
+            console.log("Scroll container computed style:")
             const computed = window.getComputedStyle(scrollContainerRef.current)
             console.log("  - position:", computed.position)
             console.log("  - zIndex:", computed.zIndex)
@@ -43,23 +43,23 @@ export function SiteCarousel({ sites, onCardClick, onClose, getDifficultyIcon, o
             const firstCard = scrollContainerRef.current.querySelector('div[style*="cursor: pointer"]')
             if (firstCard) {
                 const cardRect = firstCard.getBoundingClientRect()
-                console.log("[v0] First card dimensions:", {
+                console.log("[First card dimensions:", {
                     width: cardRect.width,
                     height: cardRect.height,
                     top: cardRect.top,
                     left: cardRect.left,
                 })
                 const cardStyle = window.getComputedStyle(firstCard)
-                console.log("[v0] First card computed style:")
+                console.log("First card computed style:")
                 console.log("  - pointerEvents:", cardStyle.pointerEvents)
                 console.log("  - cursor:", cardStyle.cursor)
             }
         }
-        console.log("[v0] ===============================")
+        console.log("===============================")
     }, [sites])
 
-    console.log("[v0] SiteCarousel - selectedSiteId:", selectedSiteId)
-    console.log("[v0] SiteCarousel - sites count:", sites.length)
+    console.log("SiteCarousel - selectedSiteId:", selectedSiteId)
+    console.log("SiteCarousel - sites count:", sites.length)
 
     return (
         <div
@@ -74,7 +74,7 @@ export function SiteCarousel({ sites, onCardClick, onClose, getDifficultyIcon, o
                 alignItems: "center",
             }}
             onClick={() => {
-                console.log("[v0] CONTAINER OUTER DIV CLICKED - This should NOT happen if cards work")
+                console.log("CONTAINER OUTER DIV CLICKED - This should NOT happen if cards work")
             }}
         >
             <div
@@ -83,7 +83,6 @@ export function SiteCarousel({ sites, onCardClick, onClose, getDifficultyIcon, o
                     console.log("SCROLL CONTAINER CLICKED")
                 }}
                 onMouseMove={(e) => {
-                    // Log mouse position to verify the container is receiving events
                     if (Math.random() < 0.01) {
                         console.log("Mouse moving over scroll container at:", e.clientX, e.clientY)
                     }

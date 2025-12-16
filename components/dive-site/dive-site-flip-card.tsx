@@ -98,7 +98,7 @@ export function DiveSiteFlipCard({
                         </p>
                     </div>
 
-                    {/* Heart button */}
+                    {/* Heart button Favourites */}
                     <button
                         onClick={(e) => {
                             e.stopPropagation()

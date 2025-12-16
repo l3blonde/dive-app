@@ -69,7 +69,7 @@ export function DiveMap() {
             })
         })
 
-        console.log("Found unique species from dive spots:", matchedSpecies.length)
+        console.log("Found unique marinespecies from dive spots:", matchedSpecies.length)
         return matchedSpecies
     }, [diveSites, isSpeciesMode, marineSpecies])
 
@@ -300,7 +300,7 @@ export function DiveMap() {
     }
 
     const handleLocationSelect = (coordinates: { longitude: number; latitude: number; zoom: number }) => {
-        console.log(" Flying to selected location:", coordinates)
+        console.log("Flying to selected location:", coordinates)
         if (mapRef.current) {
             mapRef.current.flyTo({
                 center: [coordinates.longitude, coordinates.latitude],
