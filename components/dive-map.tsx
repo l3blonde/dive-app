@@ -69,7 +69,7 @@ export function DiveMap() {
             })
         })
 
-        console.log("Found unique species from dive sites:", matchedSpecies.length)
+        console.log("Found unique species from dive spots:", matchedSpecies.length)
         return matchedSpecies
     }, [diveSites, isSpeciesMode, marineSpecies])
 
