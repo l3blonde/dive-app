@@ -24,10 +24,10 @@ export function DiveMap() {
     const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
     const [searchOpen, setSearchOpen] = useState(false)
-    console.log("[v0] searchOpen state:", searchOpen)
+    console.log("searchOpen state:", searchOpen)
 
     useEffect(() => {
-        console.log("[v0] searchOpen changed to:", searchOpen)
+        console.log("searchOpen changed to:", searchOpen)
     }, [searchOpen])
 
     const [searchQuery, setSearchQuery] = useState("")
@@ -56,7 +56,7 @@ export function DiveMap() {
                         marineLifeArray.forEach((name) => allSpeciesNames.add(name))
                     }
                 } catch (error) {
-                    console.error("[v0] Error parsing marine_life for site:", site.name, error)
+                    console.error("Error parsing marine_life for site:", site.name, error)
                 }
             }
         })
@@ -69,7 +69,7 @@ export function DiveMap() {
             })
         })
 
-        console.log("[v0] Found unique species from dive sites:", matchedSpecies.length)
+        console.log("Found unique species from dive sites:", matchedSpecies.length)
         return matchedSpecies
     }, [diveSites, isSpeciesMode, marineSpecies])
 
@@ -86,19 +86,19 @@ export function DiveMap() {
 
     const handleSpeciesMarkerClick = () => {
         if (selectedSpecies) {
-            console.log("[v0] Species marker clicked:", selectedSpecies.common_name)
+            console.log("Species marker clicked:", selectedSpecies.common_name)
         }
     }
 
     const handleMarineSpeciesClick = () => {
-        console.log("[v0] Toggling map mode")
+        console.log("Toggling map mode")
         setIsSpeciesMode(!isSpeciesMode)
         setSelectedSite(null)
         setIsBottomSheetOpen(false)
     }
 
     const handleSelectSpecies = (species: MarineSpecies) => {
-        console.log("[v0] Selected species:", species.common_name)
+        console.log("Selected species:", species.common_name)
         setSelectedSpecies(species)
         setIsSpeciesMode(false)
         setIsSpeciesBrowserOpen(false)
@@ -112,7 +112,7 @@ export function DiveMap() {
     const handleFindDiveSitesForSpecies = () => {
         if (!selectedSpeciesForPopup) return
 
-        console.log("[v0] Finding dive sites for species:", selectedSpeciesForPopup.common_name)
+        console.log("Finding dive sites for species:", selectedSpeciesForPopup.common_name)
 
         setIsSpeciesMode(false)
         setSelectedSpeciesForPopup(null)
@@ -127,12 +127,12 @@ export function DiveMap() {
                     return nameSlug === speciesSlug
                 })
             } catch (error) {
-                console.error("[v0] Error parsing marine_life for site:", site.name, error)
+                console.error("Error parsing marine_life for site:", site.name, error)
                 return false
             }
         })
 
-        console.log("[v0] Found matching dive sites:", matchingSites.length)
+        console.log("Found matching dive sites:", matchingSites.length)
 
         if (matchingSites.length > 0 && mapRef.current) {
             mapRef.current.flyTo({
@@ -144,7 +144,7 @@ export function DiveMap() {
     }
 
     const handleSpeciesAvatarClick = (species: MarineSpecies) => {
-        console.log("[v0] Species avatar clicked:", species.common_name)
+        console.log("Species avatar clicked:", species.common_name)
         setSelectedSpeciesForPopup(species)
     }
 
@@ -163,12 +163,12 @@ export function DiveMap() {
                         marineLifeArray.forEach((name) => allSpeciesNames.add(name))
                     }
                 } catch (error) {
-                    console.error("[v0] Error parsing marine_life for site:", site.name, error)
+                    console.error("Error parsing marine_life for site:", site.name, error)
                 }
             }
         })
 
-        console.log("[v0] Found unique species from dive sites:", allSpeciesNames.size)
+        console.log("Found unique species from dive sites:", allSpeciesNames.size)
     }, [diveSites])
 
     useEffect(() => {
@@ -192,14 +192,14 @@ export function DiveMap() {
                 const { data, error } = await supabase.from("marine_species").select("*").order("common_name")
 
                 if (error) {
-                    console.error("[v0] Error fetching marine species:", error)
+                    console.error("Error fetching marine species:", error)
                     return
                 }
 
-                console.log("[v0] Fetched marine species from database:", data?.length || 0)
+                console.log("Fetched marine species from database:", data?.length || 0)
                 setMarineSpecies(data || [])
             } catch (error) {
-                console.error("[v0] Failed to fetch marine species:", error)
+                console.error("Failed to fetch marine species:", error)
             }
         }
 
@@ -282,7 +282,7 @@ export function DiveMap() {
     }
 
     const handleSearchClose = () => {
-        console.log("[v0] handleSearchClose called - setting searchOpen to false")
+        console.log("handleSearchClose called - setting searchOpen to false")
         setSearchQuery("")
         setSearchOpen(false)
     }
@@ -300,7 +300,7 @@ export function DiveMap() {
     }
 
     const handleLocationSelect = (coordinates: { longitude: number; latitude: number; zoom: number }) => {
-        console.log("[v0] Flying to selected location:", coordinates)
+        console.log(" Flying to selected location:", coordinates)
         if (mapRef.current) {
             mapRef.current.flyTo({
                 center: [coordinates.longitude, coordinates.latitude],
@@ -311,7 +311,7 @@ export function DiveMap() {
     }
 
     const handleDiveSiteSelect = (site: DiveSiteWithMarineLife) => {
-        console.log("[v0] Selected dive site:", site.name)
+        console.log("Selected dive site:", site.name)
         setSelectedSite(site)
         setIsDescriptionExpanded(false)
         setIsBottomSheetOpen(false)
@@ -326,7 +326,7 @@ export function DiveMap() {
     }
 
     const handleSearchExecute = () => {
-        console.log("[v0] Executing search for:", searchQuery)
+        console.log("Executing search for:", searchQuery)
 
         const matchingSites = diveSites.filter((site: DiveSiteWithMarineLife) => {
             const query = searchQuery.toLowerCase()
@@ -337,7 +337,7 @@ export function DiveMap() {
             )
         })
 
-        console.log(`[v0] Found ${matchingSites.length} matching dive sites`)
+        console.log(`Found ${matchingSites.length} matching dive sites`)
 
         if (matchingSites.length > 0 && mapRef.current) {
             const firstSite = matchingSites[0]
@@ -429,7 +429,7 @@ export function DiveMap() {
                                     return nameSlug === speciesSlug
                                 })
                             } catch (error) {
-                                console.error("[v0] Error parsing marine_life:", error)
+                                console.error("Error parsing marine_life:", error)
                                 return false
                             }
                         })
