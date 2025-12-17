@@ -6,7 +6,7 @@ Live app: https://dive-app-omega.vercel.app
 
 ## About This Project
 
-This is our final project for the Ocean's team course.
+This is our final project for the Digital Product course.
 And this is our TechDesign Proof of Concept (POF) for
 Seafolio, an all-in-one app for divers 
 We wanted to test the feature of an interactive map that shows
