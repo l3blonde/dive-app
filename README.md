@@ -1,4 +1,4 @@
-# Seafolio - Dive Site Explorer
+# Seafolio - Dive Site App
 
 **Ocean's 4 Team - Thomas More, Final Product Project, Proof of Concept (POC) for an interactive map feature**
 
