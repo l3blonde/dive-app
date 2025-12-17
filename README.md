@@ -1,4 +1,4 @@
-# Seafolio - Dive Site App
+# Seafolio - Dive App
 
 **Ocean's 4 Team - Thomas More, Final Product Project, Proof of Concept (POC) for an interactive map feature**
 
@@ -8,7 +8,7 @@ Live app: https://dive-app-omega.vercel.app
 
 This is our final project for the Digital Product course.
 And this is our TechDesign Proof of Concept (POF) for
-Seafolio, an all-in-one app for divers 
+Seafolio, an all-in-one app for divers. 
 We wanted to test the feature of an interactive map that shows
 dive sites and marine species you can find there.
 The idea was to help divers plan their dives and learn about
