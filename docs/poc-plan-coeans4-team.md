@@ -463,38 +463,6 @@ Return video URL
 
 ---
 
-## Overall Architecture Diagram
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    USER INTERFACE                        │
-│  (Simple HTML pages for POC testing - no fancy design)  │
-└────────────────┬────────────────────────────────────────┘
-                 │
-                 │ HTTP/HTTPS
-                 │
-┌────────────────▼────────────────────────────────────────┐
-│               NEXT.JS BACKEND (API Routes)              │
-│  ┌─────────────┬──────────────┬─────────────────────┐  │
-│  │ Bluetooth   │ Species ID   │ Reel Generator      │  │
-│  │ Sync API    │ API          │ API                 │  │
-│  └──────┬──────┴──────┬───────┴──────┬──────────────┘  │
-│         │             │              │                  │
-│         │             │              │                  │
-└─────────┼─────────────┼──────────────┼──────────────────┘
-          │             │              │
-          │             │              │
-    ┌─────▼─────┐ ┌─────▼─────┐ ┌─────▼──────┐
-    │ Supabase  │ │ Gemini/   │ │ Cloudinary │
-    │ Database  │ │ GPT-4 API │ │ Video API  │
-    └───────────┘ └─────┬─────┘ └────────────┘
-                        │
-                   ┌────▼────┐
-                   │ WoRMS   │
-                   │ API     │
-                   └─────────┘
-```
-
 ### Communication Protocols Summary
 
 **Frontend ↔ Backend:**
