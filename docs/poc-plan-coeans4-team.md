@@ -628,6 +628,7 @@ Return video URL
 
 **End of POC Plan**
 
-*Deadline to submit POC: 14/01/2026
-*Send for Tom for review before the deadline (optional)
-*Ocean's 4 Team - Seafolio Project, Thomas More 2025*
+-**Deadline to submit POC**: 14/01/2026
+-**Send for review**: send to Tom for review before the deadline (optional)
+
+**Ocean's 4 Team - Seafolio Project, Thomas More 2025**
