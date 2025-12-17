@@ -427,7 +427,6 @@ Return video URL
 ### API Route Structure
 
 **File:** `/app/api/reels/generate/route.ts`
-```
 
 ### Test Plan
 
