@@ -10,7 +10,7 @@ This is our final project for the Ocean's team course.
 And this is our TechDesign Proof of Concept (POF) for
 Seafolio, an all-in-one app for divers 
 We wanted to test the feature of an interactive map that shows
-dive sites and marine species you can find there for our Seafolio app.
+dive sites and marine species you can find there.
 The idea was to help divers plan their dives and learn about
 the marine life they might encounter.
 
