@@ -3,19 +3,19 @@
 // Premium diver mask SVG icon
 function DiverMaskIcon({ color }: { color: string }) {
     return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            {/* Left lens */}
-            <circle cx="8" cy="10" r="4.5" />
-            {/* Right lens */}
-            <circle cx="16" cy="10" r="4.5" />
-            {/* Bridge between lenses */}
-            <line x1="12.5" y1="10" x2="11.5" y2="10" strokeWidth="1.5" />
-            {/* Top strap */}
-            <path d="M5 8 Q5 6 8 5 Q12 4.5 16 5 Q19 6 19 8" strokeWidth="1.5" fill="none" />
-            {/* Bottom strap left */}
-            <path d="M6 14 Q5 16 6 17.5" strokeWidth="1.5" fill="none" />
-            {/* Bottom strap right */}
-            <path d="M18 14 Q19 16 18 17.5" strokeWidth="1.5" fill="none" />
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Head strap - top arc */}
+            <path d="M6 13 C6 8 9 6 13 6 L19 6 C23 6 26 8 26 13" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+            {/* Left lens rounded rect */}
+            <rect x="4" y="13" width="10" height="8" rx="3" stroke={color} strokeWidth="1.6" fill="none"/>
+            {/* Right lens rounded rect */}
+            <rect x="18" y="13" width="10" height="8" rx="3" stroke={color} strokeWidth="1.6" fill="none"/>
+            {/* Nose bridge connecting lenses */}
+            <path d="M14 17 L18 17" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
+            {/* Left strap tail */}
+            <path d="M4 18 Q3 21 5 23" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+            {/* Right strap tail */}
+            <path d="M28 18 Q29 21 27 23" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
         </svg>
     )
 }
@@ -23,17 +23,21 @@ function DiverMaskIcon({ color }: { color: string }) {
 // Premium nautilus shell SVG icon for Memories
 function ShellIcon({ color }: { color: string }) {
     return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-            {/* Outer spiral shell */}
-            <path d="M12 2 C14 2 18 4 20 8 C21 10 21 14 19 17 C17 20 13 21 10 20" strokeWidth="1.5" fill="none" />
-            {/* Middle spiral */}
-            <path d="M12 6 C13 6 15 7 16 9 C17 11 16 14 14 16" strokeWidth="1.5" fill="none" />
-            {/* Inner spiral */}
-            <path d="M12 10 C13 10 14 11 14 12.5 C14 14 13 15 12 15" strokeWidth="1.5" fill="none" />
-            {/* Shell ridges */}
-            <line x1="15" y1="8" x2="13" y2="5" strokeWidth="1" opacity="0.6" />
-            <line x1="18" y1="12" x2="16" y2="10" strokeWidth="1" opacity="0.6" />
-            <line x1="19" y1="16" x2="17" y2="14" strokeWidth="1" opacity="0.6" />
+        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer shell curve */}
+            <path d="M16 4 C22 4 28 9 28 16 C28 22 23 27 17 27 C13 27 9 25 8 22" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+            {/* Second whorl */}
+            <path d="M16 8 C20 8 24 11.5 24 16 C24 20 21 23 17 23 C14 23 11 21 10 19" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+            {/* Third whorl */}
+            <path d="M16 12 C18 12 20 13.8 20 16 C20 18 18.5 19.5 17 20" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+            {/* Inner core */}
+            <circle cx="16" cy="16" r="1.5" stroke={color} strokeWidth="1.4" fill="none"/>
+            {/* Shell base opening */}
+            <path d="M8 22 C6 23 5 25 7 27 C9 28.5 13 28 16 27" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
+            {/* Ridge lines on shell */}
+            <path d="M22 9 L20 7" stroke={color} strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
+            <path d="M26 14 L24 13" stroke={color} strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
+            <path d="M26 19 L24 19" stroke={color} strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
         </svg>
     )
 }
