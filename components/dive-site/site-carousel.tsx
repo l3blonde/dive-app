@@ -1,6 +1,7 @@
 "use client"
-import { useState, useEffect, useRef } from "react"
-import { DiveSiteFlipCard } from "./dive-site-flip-card"
+
+import { useState, useRef, useEffect } from "react"
+import { Star, BookmarkPlus, ArrowRight } from "lucide-react"
 import type { DiveSite } from "@/lib/types"
 import type { LucideIcon } from "lucide-react"
 
@@ -14,206 +15,276 @@ interface SiteCarouselProps {
 
 export function SiteCarousel({ sites, onCardClick, onClose, getDifficultyIcon, onIndexChange }: SiteCarouselProps) {
     const scrollContainerRef = useRef<HTMLDivElement>(null)
-    const [selectedSiteId, setSelectedSiteId] = useState<string | null>(null)
+    const [activeIndex, setActiveIndex] = useState(0)
 
+    // Track scroll position to update pagination dots
     useEffect(() => {
-        console.log("===== CAROUSEL MOUNTED =====")
-        console.log("Sites count:", sites.length)
-        console.log("Scroll container ref:", scrollContainerRef.current)
+        const container = scrollContainerRef.current
+        if (!container) return
 
-        if (scrollContainerRef.current) {
-            const rect = scrollContainerRef.current.getBoundingClientRect()
-            console.log("Scroll container dimensions:", {
-                width: rect.width,
-                height: rect.height,
-                top: rect.top,
-                left: rect.left,
-                bottom: rect.bottom,
-                right: rect.right,
-            })
-            console.log("Scroll container computed style:")
-            const computed = window.getComputedStyle(scrollContainerRef.current)
-            console.log("  - position:", computed.position)
-            console.log("  - zIndex:", computed.zIndex)
-            console.log("  - pointerEvents:", computed.pointerEvents)
-            console.log("  - display:", computed.display)
-            console.log("  - visibility:", computed.visibility)
-
-            // Check first card
-            const firstCard = scrollContainerRef.current.querySelector('div[style*="cursor: pointer"]')
-            if (firstCard) {
-                const cardRect = firstCard.getBoundingClientRect()
-                console.log("[First card dimensions:", {
-                    width: cardRect.width,
-                    height: cardRect.height,
-                    top: cardRect.top,
-                    left: cardRect.left,
-                })
-                const cardStyle = window.getComputedStyle(firstCard)
-                console.log("First card computed style:")
-                console.log("  - pointerEvents:", cardStyle.pointerEvents)
-                console.log("  - cursor:", cardStyle.cursor)
-            }
+        const handleScroll = () => {
+            const cardWidth = 300 + 16 // card width + gap
+            const index = Math.round(container.scrollLeft / cardWidth)
+            setActiveIndex(index)
+            onIndexChange(index)
         }
-        console.log("===============================")
-    }, [sites])
 
-    console.log("SiteCarousel - selectedSiteId:", selectedSiteId)
-    console.log("SiteCarousel - sites count:", sites.length)
+        container.addEventListener("scroll", handleScroll, { passive: true })
+        return () => container.removeEventListener("scroll", handleScroll)
+    }, [onIndexChange])
+
+    const scrollToIndex = (index: number) => {
+        const container = scrollContainerRef.current
+        if (!container) return
+        const cardWidth = 300 + 16
+        container.scrollTo({ left: index * cardWidth, behavior: "smooth" })
+    }
 
     return (
         <div
             style={{
                 position: "fixed",
-                bottom: "180px",
+                bottom: "100px",
                 left: 0,
                 right: 0,
                 zIndex: 1000,
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-            }}
-            onClick={() => {
-                console.log("CONTAINER OUTER DIV CLICKED - This should NOT happen if cards work")
             }}
         >
+            {/* Card scroll strip */}
             <div
                 ref={scrollContainerRef}
-                onClick={() => {
-                    console.log("SCROLL CONTAINER CLICKED")
-                }}
-                onMouseMove={(e) => {
-                    if (Math.random() < 0.01) {
-                        console.log("Mouse moving over scroll container at:", e.clientX, e.clientY)
-                    }
-                }}
                 style={{
                     display: "flex",
                     gap: "16px",
-                    padding: "20px",
+                    padding: "12px 20px",
                     overflowX: "auto",
                     overflowY: "hidden",
-                    maxWidth: "90vw",
                     WebkitOverflowScrolling: "touch",
                     scrollSnapType: "x mandatory",
                     scrollBehavior: "smooth",
-                    pointerEvents: "auto",
-                    zIndex: 1001,
+                    // hide scrollbar
+                    msOverflowStyle: "none",
+                    scrollbarWidth: "none",
                 }}
             >
-                {sites.map((site, index) => {
-                    const isFavorite = false
-                    const isSelected = selectedSiteId === site.id
+                {sites.map((site, index) => (
+                    <CarouselCard
+                        key={site.id}
+                        site={site}
+                        onViewDetails={() => {
+                            onCardClick(site)
+                            onClose()
+                        }}
+                        onAddToPlan={() => {
+                            // Plan action — wired up later
+                        }}
+                    />
+                ))}
+            </div>
 
-                    console.log("Rendering site:", site.name, "isSelected:", isSelected, "index:", index)
-
-                    if (isSelected) {
-                        return (
-                            <DiveSiteFlipCard
-                                key={site.id}
-                                site={site}
-                                onViewSite={() => {
-                                    onCardClick(site)
-                                    onClose()
-                                }}
-                                onFavorite={() => {
-                                }}
-                                isFavorite={isFavorite}
-                                getDifficultyIcon={getDifficultyIcon}
-                            />
-                        )
-                    }
-
-                    return (
-                        <div
-                            key={site.id}
-                            onClick={(e) => {
-                                e.stopPropagation()
-                                setSelectedSiteId(site.id)
-                                onIndexChange(index)
-                            }}
+            {/* Pagination dots */}
+            {sites.length > 1 && (
+                <div
+                    style={{
+                        display: "flex",
+                        justifyContent: "center",
+                        gap: "6px",
+                        marginTop: "8px",
+                    }}
+                >
+                    {sites.map((_, i) => (
+                        <button
+                            key={i}
+                            onClick={() => scrollToIndex(i)}
+                            aria-label={`Go to slide ${i + 1}`}
                             style={{
-                                minWidth: "140px",
-                                width: "140px",
-                                height: "240px",
-                                position: "relative",
-                                transformStyle: "preserve-3d",
-                                transform: "rotateY(2deg) translateZ(20px)",
-                                transition: "transform 0.3s",
-                                boxShadow: "0 4px 8px rgba(0,0,0,0.15), 0 8px 16px rgba(0,0,0,0.1)",
-                                borderRadius: "16px",
-                                overflow: "hidden",
+                                width: i === activeIndex ? "20px" : "6px",
+                                height: "6px",
+                                borderRadius: "3px",
+                                border: "none",
                                 cursor: "pointer",
-                                backgroundImage: `url(${site.image_url || "https://xu5qaaigiohvkyk8.public.blob.vercel-storage.com/site-placeholder.png"})`,
-                                backgroundSize: "cover",
-                                backgroundPosition: "center",
-                                scrollSnapAlign: "center",
-                                pointerEvents: "auto",
+                                padding: 0,
+                                background: i === activeIndex ? "#1A2744" : "rgba(255,255,255,0.6)",
+                                transition: "all 0.3s ease",
                             }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.transform = "rotateY(2deg) translateZ(30px) scale(1.05)"
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.transform = "rotateY(2deg) translateZ(20px)"
-                            }}
-                        >
-                            {/* Text overlay at bottom */}
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    bottom: 0,
-                                    left: 0,
-                                    right: 0,
-                                    padding: "12px",
-                                    background: "linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.4) 70%, transparent 100%)",
-                                    pointerEvents: "none",
-                                }}
-                            >
-                                <h4
-                                    style={{
-                                        fontSize: "14px",
-                                        fontWeight: "700",
-                                        color: "white",
-                                        margin: 0,
-                                        textShadow: "0 1px 2px rgba(0,0,0,0.5)",
-                                        lineHeight: 1.2,
-                                    }}
-                                >
-                                    {site.name}
-                                </h4>
-                                <p
-                                    style={{
-                                        fontSize: "11px",
-                                        color: "rgba(255,255,255,0.9)",
-                                        margin: "4px 0 0 0",
-                                    }}
-                                >
-                                    {site.location_name}
-                                </p>
-                            </div>
+                        />
+                    ))}
+                </div>
+            )}
+        </div>
+    )
+}
 
-                            {/* Rating badge */}
-                            <div
-                                style={{
-                                    position: "absolute",
-                                    bottom: "52px",
-                                    right: "12px",
-                                    background: "rgba(59, 130, 246, 0.95)",
-                                    borderRadius: "20px",
-                                    padding: "4px 10px",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    gap: "4px",
-                                    boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
-                                    pointerEvents: "none",
-                                }}
-                            >
-                                <span style={{ fontSize: "12px" }}>⭐</span>
-                                <span style={{ fontSize: "12px", fontWeight: "700", color: "white" }}>4.7</span>
-                            </div>
-                        </div>
-                    )
-                })}
+// ─── Individual card ──────────────────────────────────────────────────────────
+
+interface CarouselCardProps {
+    site: DiveSite
+    onViewDetails: () => void
+    onAddToPlan: () => void
+}
+
+function CarouselCard({ site, onViewDetails, onAddToPlan }: CarouselCardProps) {
+    const [hovered, setHovered] = useState(false)
+
+    // Generate a deterministic-ish rating from site id
+    const rating = ((site.id?.charCodeAt(0) ?? 70) % 15) / 10 + 4.0
+    const ratingDisplay = Math.min(rating, 5.0).toFixed(1)
+
+    // Dive count fallback
+    const diveCount = (site as any).dive_count ?? (site as any).number_of_dives ?? "—"
+
+    return (
+        <div
+            onMouseEnter={() => setHovered(true)}
+            onMouseLeave={() => setHovered(false)}
+            style={{
+                minWidth: "300px",
+                width: "300px",
+                height: "190px",
+                position: "relative",
+                borderRadius: "12px",
+                overflow: "hidden",
+                cursor: "pointer",
+                scrollSnapAlign: "center",
+                boxShadow: hovered
+                    ? "0 12px 32px rgba(0,0,0,0.35)"
+                    : "0 6px 20px rgba(0,0,0,0.2)",
+                transform: hovered ? "translateY(-3px)" : "translateY(0)",
+                transition: "box-shadow 0.25s ease, transform 0.25s ease",
+                backgroundImage: `url(${site.image_url || "https://xu5qaaigiohvkyk8.public.blob.vercel-storage.com/site-placeholder.png"})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                flexShrink: 0,
+            }}
+        >
+            {/* Dark gradient overlay */}
+            <div
+                style={{
+                    position: "absolute",
+                    inset: 0,
+                    background: "linear-gradient(to top, rgba(0,0,0,0.82) 0%, rgba(0,0,0,0.3) 55%, transparent 100%)",
+                    pointerEvents: "none",
+                }}
+            />
+
+            {/* Rating badge — top right */}
+            <div
+                style={{
+                    position: "absolute",
+                    top: "12px",
+                    right: "12px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "4px",
+                    background: "rgba(26,39,68,0.85)",
+                    backdropFilter: "blur(6px)",
+                    WebkitBackdropFilter: "blur(6px)",
+                    borderRadius: "12px",
+                    padding: "4px 10px",
+                    pointerEvents: "none",
+                }}
+            >
+                <Star size={12} fill="#FACC15" color="#FACC15" />
+                <span style={{ fontSize: "12px", fontWeight: 700, color: "white" }}>{ratingDisplay}</span>
+            </div>
+
+            {/* Bottom content */}
+            <div
+                style={{
+                    position: "absolute",
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    padding: "12px 14px",
+                }}
+            >
+                {/* Site name */}
+                <h4
+                    style={{
+                        fontSize: "16px",
+                        fontWeight: 700,
+                        color: "white",
+                        margin: "0 0 2px 0",
+                        lineHeight: 1.2,
+                        textShadow: "0 1px 4px rgba(0,0,0,0.5)",
+                    }}
+                >
+                    {site.name}
+                </h4>
+
+                {/* Meta row */}
+                <p
+                    style={{
+                        fontSize: "12px",
+                        color: "rgba(255,255,255,0.8)",
+                        margin: "0 0 10px 0",
+                    }}
+                >
+                    {diveCount !== "—" && `${diveCount} Dives · `}{site.location_name}
+                </p>
+
+                {/* CTA buttons row */}
+                <div style={{ display: "flex", gap: "8px" }}>
+                    {/* Add to Plan */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onAddToPlan()
+                        }}
+                        style={{
+                            flex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "6px",
+                            padding: "8px 0",
+                            borderRadius: "12px",
+                            border: "1.5px solid rgba(255,255,255,0.6)",
+                            background: "rgba(255,255,255,0.15)",
+                            backdropFilter: "blur(8px)",
+                            WebkitBackdropFilter: "blur(8px)",
+                            color: "white",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            transition: "background 0.2s",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.25)" }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "rgba(255,255,255,0.15)" }}
+                    >
+                        <BookmarkPlus size={14} color="white" />
+                        Add to Plan
+                    </button>
+
+                    {/* View Details */}
+                    <button
+                        onClick={(e) => {
+                            e.stopPropagation()
+                            onViewDetails()
+                        }}
+                        style={{
+                            flex: 1,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            gap: "6px",
+                            padding: "8px 0",
+                            borderRadius: "12px",
+                            border: "none",
+                            background: "#1A2744",
+                            color: "white",
+                            fontSize: "12px",
+                            fontWeight: 600,
+                            cursor: "pointer",
+                            transition: "background 0.2s",
+                        }}
+                        onMouseEnter={(e) => { e.currentTarget.style.background = "#263660" }}
+                        onMouseLeave={(e) => { e.currentTarget.style.background = "#1A2744" }}
+                    >
+                        <ArrowRight size={14} color="white" />
+                        View Details
+                    </button>
+                </div>
             </div>
         </div>
     )

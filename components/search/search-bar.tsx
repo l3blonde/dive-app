@@ -23,33 +23,31 @@ interface SearchBarProps {
     onSearchExecute?: () => void
 }
 
+type MapTab = "dive-sites" | "trips" | "marine-life"
+
 export function SearchBar({
-                              isOpen,
-                              searchQuery,
-                              onSearchChange,
-                              onClose,
-                              filters,
-                              onFilterChange,
-                              resultsCount,
-                              showFilters,
-                              onToggleFilters,
-                              onReset,
-                              allDiveSites,
-                              onLocationSelect,
-                              onDiveSiteSelect,
-                              onSearchExecute,
-                          }: SearchBarProps) {
-    console.log("[v0] SearchBar component rendering")
+    isOpen,
+    searchQuery,
+    onSearchChange,
+    onClose,
+    filters,
+    onFilterChange,
+    resultsCount,
+    showFilters,
+    onToggleFilters,
+    onReset,
+    allDiveSites,
+    onLocationSelect,
+    onDiveSiteSelect,
+    onSearchExecute,
+}: SearchBarProps) {
     const [isMounted, setIsMounted] = useState(false)
+    const [activeMapTab, setActiveMapTab] = useState<MapTab>("dive-sites")
 
     useEffect(() => {
-        console.log("[v0] SearchBar mounted")
         setIsMounted(true)
         const timer = setTimeout(() => setIsMounted(true), 100)
-        return () => {
-            console.log("[v0] SearchBar unmounted")
-            clearTimeout(timer)
-        }
+        return () => clearTimeout(timer)
     }, [])
 
     const [showAutocomplete, setShowAutocomplete] = useState(false)
@@ -77,7 +75,6 @@ export function SearchBar({
                 }
 
                 const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${encodeURIComponent(localSearchQuery)}.json?access_token=${token}&types=country,region,place&limit=5`
-
                 const response = await fetch(url)
 
                 if (!response.ok) {
@@ -140,10 +137,8 @@ export function SearchBar({
         .slice(0, 5)
 
     const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        console.log("[v0] Backdrop clicked")
         e.stopPropagation()
         if (e.target === e.currentTarget && isMounted) {
-            console.log("[v0] Calling onClose from backdrop")
             onClose()
         }
     }
@@ -154,7 +149,6 @@ export function SearchBar({
             onSearchChange(site.name)
             setShowAutocomplete(false)
             onDiveSiteSelect?.(site)
-            console.log("[v0] Dive site selected, not auto-closing")
         } else {
             const location = result as AutocompleteResult
             onSearchChange(location.name)
@@ -166,7 +160,6 @@ export function SearchBar({
                     zoom: location.zoom || 10,
                 })
             }
-            console.log("[v0] Location selected, not auto-closing")
         }
     }
 
@@ -177,9 +170,13 @@ export function SearchBar({
         }
     }
 
-    if (!isOpen) {
-        return null
-    }
+    if (!isOpen) return null
+
+    const MAP_TABS: { id: MapTab; label: string }[] = [
+        { id: "dive-sites", label: "Dive Sites" },
+        { id: "trips", label: "Trips" },
+        { id: "marine-life", label: "Marine Life" },
+    ]
 
     return (
         <>
@@ -192,7 +189,7 @@ export function SearchBar({
                     left: 0,
                     right: 0,
                     bottom: 0,
-                    background: "rgba(0, 0, 0, 0.3)",
+                    background: "rgba(0,0,0,0.3)",
                     zIndex: 1999,
                 }}
             />
@@ -202,14 +199,14 @@ export function SearchBar({
                     position: "fixed",
                     top: "16px",
                     left: "16px",
-                    right: "80px", // Leave space for map controls on the right
-                    maxWidth: "800px", // Reduced from 1000px
+                    right: "80px",
+                    maxWidth: "800px",
                     zIndex: 2000,
                 }}
             >
-                {/* Main search row */}
+                {/* Search row */}
                 <div style={{ display: "flex", gap: "10px", alignItems: "center" }}>
-                    {/* Search bar - more compact */}
+                    {/* Search input */}
                     <div
                         style={{
                             flex: 1,
@@ -217,31 +214,18 @@ export function SearchBar({
                             alignItems: "center",
                             gap: "10px",
                             background: "white",
-                            borderRadius: "50px",
-                            padding: "12px 20px", // Reduced padding
-                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                            borderRadius: "12px",
+                            padding: "12px 16px",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
                         }}
                     >
-                        {/* Search icon */}
-                        <svg
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="#9CA3AF"
-                            strokeWidth="2.5"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            style={{ flexShrink: 0 }}
-                        >
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#9CA3AF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" style={{ flexShrink: 0 }}>
                             <circle cx="11" cy="11" r="8" />
                             <path d="m21 21-4.35-4.35" />
                         </svg>
-
-                        {/* Search input */}
                         <input
                             type="text"
-                            placeholder="Search dive sites, cities, countries."
+                            placeholder="Search dive sites, trips, species"
                             value={localSearchQuery}
                             onChange={(e) => {
                                 setLocalSearchQuery(e.target.value)
@@ -249,9 +233,7 @@ export function SearchBar({
                             }}
                             onKeyDown={handleKeyDown}
                             onFocus={() => {
-                                if (localSearchQuery.trim().length >= 2) {
-                                    setShowAutocomplete(true)
-                                }
+                                if (localSearchQuery.trim().length >= 2) setShowAutocomplete(true)
                             }}
                             autoFocus
                             style={{
@@ -260,13 +242,11 @@ export function SearchBar({
                                 border: "none",
                                 outline: "none",
                                 color: "#374151",
-                                fontSize: "15px", // Slightly smaller
+                                fontSize: "15px",
                                 fontWeight: 400,
                                 minWidth: 0,
                             }}
                         />
-
-                        {/* Clear button */}
                         {localSearchQuery && (
                             <button
                                 onClick={() => {
@@ -277,75 +257,89 @@ export function SearchBar({
                                 aria-label="Clear search"
                                 style={{
                                     flexShrink: 0,
-                                    width: "28px",
-                                    height: "28px",
+                                    width: "26px",
+                                    height: "26px",
                                     borderRadius: "50%",
                                     display: "flex",
                                     alignItems: "center",
                                     justifyContent: "center",
                                     border: "none",
-                                    background: "transparent",
+                                    background: "#F3F4F6",
                                     cursor: "pointer",
-                                    transition: "background 0.2s",
                                 }}
-                                onMouseEnter={(e) => (e.currentTarget.style.background = "#F3F4F6")}
-                                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
                             >
-                                <svg width="14" height="14" viewBox="0 0 20 20" fill="none">
-                                    <path
-                                        d="M4 4l12 12M16 4L4 16"
-                                        stroke="#9CA3AF"
-                                        strokeWidth="2"
-                                        strokeLinecap="round"
-                                        strokeLinejoin="round"
-                                    />
+                                <svg width="12" height="12" viewBox="0 0 20 20" fill="none">
+                                    <path d="M4 4l12 12M16 4L4 16" stroke="#9CA3AF" strokeWidth="2" strokeLinecap="round" />
                                 </svg>
                             </button>
                         )}
                     </div>
 
+                    {/* Filter icon only — no text */}
                     <button
                         onClick={onToggleFilters}
+                        aria-label="Filter"
                         style={{
                             flexShrink: 0,
                             display: "flex",
                             alignItems: "center",
-                            gap: "8px",
-                            background: "white",
-                            borderRadius: "50px",
-                            padding: "12px 20px", // Reduced padding
-                            boxShadow: "0 4px 12px rgba(0, 0, 0, 0.1)",
+                            justifyContent: "center",
+                            background: showFilters ? "#1A2744" : "white",
+                            borderRadius: "12px",
+                            padding: "12px 14px",
+                            boxShadow: "0 4px 16px rgba(0,0,0,0.12)",
                             border: "none",
                             cursor: "pointer",
                             transition: "background 0.2s",
                         }}
-                        onMouseEnter={(e) => (e.currentTarget.style.background = "#F9FAFB")}
-                        onMouseLeave={(e) => (e.currentTarget.style.background = "white")}
                     >
-                        <svg
-                            width="18"
-                            height="18"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke={showFilters ? "#3B82F6" : "#9CA3AF"}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                        >
-                            <line x1="4" y1="6" x2="4" y2="6" />
-                            <line x1="4" y1="12" x2="4" y2="12" />
-                            <line x1="4" y1="18" x2="4" y2="18" />
-                            <line x1="8" y1="6" x2="20" y2="6" />
-                            <line x1="8" y1="12" x2="20" y2="12" />
-                            <line x1="8" y1="18" x2="20" y2="18" />
+                        {/* SlidersHorizontal icon */}
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke={showFilters ? "white" : "#374151"} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <line x1="21" y1="4" x2="14" y2="4" />
+                            <line x1="10" y1="4" x2="3" y2="4" />
+                            <line x1="21" y1="12" x2="12" y2="12" />
+                            <line x1="8" y1="12" x2="3" y2="12" />
+                            <line x1="21" y1="20" x2="16" y2="20" />
+                            <line x1="12" y1="20" x2="3" y2="20" />
+                            <circle cx="12" cy="4" r="2" />
+                            <circle cx="10" cy="12" r="2" />
+                            <circle cx="14" cy="20" r="2" />
                         </svg>
-                        <span style={{ fontSize: "15px", fontWeight: 500, color: "#6B7280" }}>Filter</span>
                     </button>
                 </div>
 
-                {/* Autocomplete dropdown */}
+                {/* Modular tabs: Dive Sites | Trips | Marine Life */}
+                <div style={{ display: "flex", gap: "8px", marginTop: "10px" }}>
+                    {MAP_TABS.map((tab) => {
+                        const isActive = activeMapTab === tab.id
+                        return (
+                            <button
+                                key={tab.id}
+                                onClick={() => setActiveMapTab(tab.id)}
+                                style={{
+                                    padding: "7px 16px",
+                                    borderRadius: "12px",
+                                    border: "none",
+                                    cursor: "pointer",
+                                    fontSize: "13px",
+                                    fontWeight: isActive ? 700 : 500,
+                                    background: isActive ? "#1A2744" : "rgba(255,255,255,0.85)",
+                                    color: isActive ? "white" : "#374151",
+                                    boxShadow: isActive ? "0 2px 8px rgba(26,39,68,0.25)" : "0 2px 8px rgba(0,0,0,0.08)",
+                                    transition: "all 0.2s ease",
+                                    backdropFilter: "blur(8px)",
+                                    WebkitBackdropFilter: "blur(8px)",
+                                }}
+                            >
+                                {tab.label}
+                            </button>
+                        )
+                    })}
+                </div>
+
+                {/* Autocomplete */}
                 {showAutocomplete && (locationResults.length > 0 || matchingDiveSites.length > 0 || isLoadingResults) && (
-                    <div style={{ marginTop: "12px" }}>
+                    <div style={{ marginTop: "10px" }}>
                         <AutocompleteDropdown
                             results={locationResults}
                             diveSites={matchingDiveSites}
@@ -357,20 +351,20 @@ export function SearchBar({
 
                 {/* Results count */}
                 {localSearchQuery && !showAutocomplete && (
-                    <div style={{ marginTop: "16px", textAlign: "center" }}>
-            <span
-                style={{
-                    display: "inline-block",
-                    background: "#DBEAFE",
-                    color: "#1E40AF",
-                    padding: "8px 16px",
-                    borderRadius: "50px",
-                    fontSize: "14px",
-                    fontWeight: 500,
-                }}
-            >
-              {resultsCount} {resultsCount === 1 ? "result" : "results"}
-            </span>
+                    <div style={{ marginTop: "12px", textAlign: "center" }}>
+                        <span
+                            style={{
+                                display: "inline-block",
+                                background: "#DBEAFE",
+                                color: "#1E40AF",
+                                padding: "6px 14px",
+                                borderRadius: "12px",
+                                fontSize: "13px",
+                                fontWeight: 500,
+                            }}
+                        >
+                            {resultsCount} {resultsCount === 1 ? "result" : "results"}
+                        </span>
                     </div>
                 )}
             </div>
