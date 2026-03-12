@@ -13,7 +13,7 @@ Notion https://www.notion.so/3216bc397f2180198696d4ddfe4af5f5?v=3216bc397f218064
 
 | Phase | Dates | Focus |
 |-------|-------|-------|
-| Sprint 1 | Feb 26 - Mar 12 | Figma Refinement + Core Setup |
+| Sprint 1 | Feb 26 - Mar 19 | Figma Refinement + Core Setup |
 | Sprint 2 | Mar 12 - Mar 26 | Explore Page (Home) |
 | Sprint 3 | Mar 26 - Apr 23 | Dive Site Details + Plan Feature |
 | Sprint 4 | Apr 23 - May 7 | Start Dive + Logbook |
