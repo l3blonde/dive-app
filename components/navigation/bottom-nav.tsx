@@ -1,29 +1,39 @@
 "use client"
 
-// Custom diver mask SVG icon
+// Premium diver mask SVG icon
 function DiverMaskIcon({ color }: { color: string }) {
     return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {/* Mask strap top */}
-            <path d="M3 8 C3 6 5 5 7 5 L17 5 C19 5 21 6 21 8" />
-            {/* Mask lens frame */}
-            <rect x="3" y="8" width="18" height="9" rx="3" ry="3" />
-            {/* Nose bridge divider */}
-            <line x1="12" y1="8" x2="12" y2="17" />
-            {/* Snorkel / strap bottom */}
-            <path d="M3 17 C3 19 5 20 7 20 L17 20 C19 20 21 19 21 17" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            {/* Left lens */}
+            <circle cx="8" cy="10" r="4.5" />
+            {/* Right lens */}
+            <circle cx="16" cy="10" r="4.5" />
+            {/* Bridge between lenses */}
+            <line x1="12.5" y1="10" x2="11.5" y2="10" strokeWidth="1.5" />
+            {/* Top strap */}
+            <path d="M5 8 Q5 6 8 5 Q12 4.5 16 5 Q19 6 19 8" strokeWidth="1.5" fill="none" />
+            {/* Bottom strap left */}
+            <path d="M6 14 Q5 16 6 17.5" strokeWidth="1.5" fill="none" />
+            {/* Bottom strap right */}
+            <path d="M18 14 Q19 16 18 17.5" strokeWidth="1.5" fill="none" />
         </svg>
     )
 }
 
-// Custom shell SVG icon for Memories
+// Premium nautilus shell SVG icon for Memories
 function ShellIcon({ color }: { color: string }) {
     return (
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-            {/* Shell spiral body */}
-            <path d="M12 21 C6 21 3 17 3 12 C3 7 7 3 12 3 C17 3 21 7 21 12 C21 16 18 19 14 19 C11 19 9 17 9 14 C9 11 11 9 13 9 C15 9 16 11 15 13 C14.5 14.5 13 15 12 14" />
-            {/* Shell tip */}
-            <path d="M12 21 L10 22" />
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+            {/* Outer spiral shell */}
+            <path d="M12 2 C14 2 18 4 20 8 C21 10 21 14 19 17 C17 20 13 21 10 20" strokeWidth="1.5" fill="none" />
+            {/* Middle spiral */}
+            <path d="M12 6 C13 6 15 7 16 9 C17 11 16 14 14 16" strokeWidth="1.5" fill="none" />
+            {/* Inner spiral */}
+            <path d="M12 10 C13 10 14 11 14 12.5 C14 14 13 15 12 15" strokeWidth="1.5" fill="none" />
+            {/* Shell ridges */}
+            <line x1="15" y1="8" x2="13" y2="5" strokeWidth="1" opacity="0.6" />
+            <line x1="18" y1="12" x2="16" y2="10" strokeWidth="1" opacity="0.6" />
+            <line x1="19" y1="16" x2="17" y2="14" strokeWidth="1" opacity="0.6" />
         </svg>
     )
 }
