@@ -1,43 +1,27 @@
 "use client"
 
+import { Shell } from "lucide-react"
+
 // Premium diver mask SVG icon
 function DiverMaskIcon({ color }: { color: string }) {
     return (
-        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Head strap - top arc */}
-            <path d="M6 13 C6 8 9 6 13 6 L19 6 C23 6 26 8 26 13" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-            {/* Left lens rounded rect */}
-            <rect x="4" y="13" width="10" height="8" rx="3" stroke={color} strokeWidth="1.6" fill="none"/>
-            {/* Right lens rounded rect */}
-            <rect x="18" y="13" width="10" height="8" rx="3" stroke={color} strokeWidth="1.6" fill="none"/>
-            {/* Nose bridge connecting lenses */}
-            <path d="M14 17 L18 17" stroke={color} strokeWidth="1.6" strokeLinecap="round"/>
-            {/* Left strap tail */}
-            <path d="M4 18 Q3 21 5 23" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-            {/* Right strap tail */}
-            <path d="M28 18 Q29 21 27 23" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-        </svg>
-    )
-}
-
-// Premium nautilus shell SVG icon for Memories
-function ShellIcon({ color }: { color: string }) {
-    return (
-        <svg width="26" height="26" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
-            {/* Outer shell curve */}
-            <path d="M16 4 C22 4 28 9 28 16 C28 22 23 27 17 27 C13 27 9 25 8 22" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-            {/* Second whorl */}
-            <path d="M16 8 C20 8 24 11.5 24 16 C24 20 21 23 17 23 C14 23 11 21 10 19" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-            {/* Third whorl */}
-            <path d="M16 12 C18 12 20 13.8 20 16 C20 18 18.5 19.5 17 20" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-            {/* Inner core */}
-            <circle cx="16" cy="16" r="1.5" stroke={color} strokeWidth="1.4" fill="none"/>
-            {/* Shell base opening */}
-            <path d="M8 22 C6 23 5 25 7 27 C9 28.5 13 28 16 27" stroke={color} strokeWidth="1.6" strokeLinecap="round" fill="none"/>
-            {/* Ridge lines on shell */}
-            <path d="M22 9 L20 7" stroke={color} strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
-            <path d="M26 14 L24 13" stroke={color} strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
-            <path d="M26 19 L24 19" stroke={color} strokeWidth="1" strokeLinecap="round" opacity="0.5"/>
+        <svg width="26" height="26" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            {/* Outer mask body - full silhouette */}
+            <path
+                d="M4 15 C4 11 7 9 11 9 L25 9 C29 9 32 11 32 15 L32 22 C32 25 30 27 27 27 L22 27 C20.5 27 19.5 26 19 25 L18 23 L17 25 C16.5 26 15.5 27 14 27 L9 27 C6 27 4 25 4 22 Z"
+                stroke={color}
+                strokeWidth="1.6"
+                strokeLinejoin="round"
+                fill="none"
+            />
+            {/* Left lens inner rounded rect */}
+            <rect x="6" y="12" width="10" height="9" rx="2.5" stroke={color} strokeWidth="1.4" fill="none" />
+            {/* Right lens inner rounded rect */}
+            <rect x="20" y="12" width="10" height="9" rx="2.5" stroke={color} strokeWidth="1.4" fill="none" />
+            {/* Nose bridge */}
+            <path d="M16 16.5 L20 16.5" stroke={color} strokeWidth="1.4" strokeLinecap="round" />
+            {/* Top strap */}
+            <path d="M11 9 C11 6 14 4 18 4 C22 4 25 6 25 9" stroke={color} strokeWidth="1.5" strokeLinecap="round" fill="none" />
         </svg>
     )
 }
@@ -134,7 +118,7 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                             {tab.custom === "mask" ? (
                                 <DiverMaskIcon color={color} />
                             ) : tab.custom === "shell" ? (
-                                <ShellIcon color={color} />
+                                <Shell size={24} color={color} strokeWidth={1.6} />
                             ) : (
                                 <svg
                                     width="24"
