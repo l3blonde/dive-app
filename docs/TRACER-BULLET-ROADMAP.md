@@ -1,380 +1,539 @@
-# Dive App - Proof of Concept Implementation Plan
-
-The Ocean's4 team will implement the dive app as a Proof of Concept to validate core features
-and technical architecture before full-scale development.
-
-## What is Tracer Bullet Development?
-
-**Tracer Bullet Technique:**
-- Build one complete feature end-to-end (frontend → backend → database)
-- Test and validate it fully before moving to the next
-- Each "bullet" traces through all layers of the stack
-- Reduces risk by proving architecture early
-- Allows for quick pivots based on user feedback
-
-## Feature 1: Interactive Map with Dive Sites
-
-First, we're going to build an interactive map that displays dive sites worldwide
-using real location data and allows users to browse sites visually.
-
-### APIs We'll Use
-- **Mapbox GL API** - Interactive map rendering with custom styling
-- **Mapbox Geocoding API** - Location search and coordinate validation
-- **Supabase Database** - Store and retrieve dive site data
-- **WoRMS API** - Species taxonomy and scientific names
-- **OBIS API** - Species occurrence data at dive locations
-
-### What We'll Build
-
-#### 1.1 Map Display Component
-We'll create `components/dive-map.tsx` that initialises Mapbox GL and displays an interactive map.
-
-**Code we'll write:**
-- Import `react-map-gl` library and Mapbox GL styles
-- Set up map state (viewport, zoom level, center coordinates)
-- Configure Mapbox access token from environment variables
-- Add navigation controls (zoom in/out, compass, geolocation)
-- Handle map interactions (pan, zoom, click events)
-- Add map styles (ocean colour and land colour)
-- Add marines species button (fish icon)
-
-**Functions we'll use:**
-- `useState()` for map viewport state
-- `useEffect()` to initialise map on component mount
-- `Map` component from react-map-gl
-- `NavigationControl` and `GeolocateControl` for map controls
-
-**Testing:**
-- Load the map and verify it displays correctly
-- Test zoom controls work smoothly
-- Verify geolocation button centres map on user's location
-- Check map is responsive on mobile and desktop
-
-#### 1.2 Dive Site Markers
-We'll add custom markers to the map showing dive site locations.
-
-**Code we'll write:**
-- Create `components/map/map-marker.tsx` for custom circular markers
-- Fetch dive sites from Supabase database
-- Map over dive sites array and render markers at lat/lng coordinates
-- Style markers with blue circular icons
-- Add hover effects to markers
-
-**Functions we'll use:**
-- `Marker` component from react-map-gl
-- `fetch()` to get dive sites from `/api/dive-sites`
-- `map()` to iterate over sites and render markers
-- CSS transforms for hover animations
-
-**Testing:**
-- Verify all dive site markers appear on map
-- Test marker positions match actual dive site coordinates
-- Check hover effects trigger correctly
-- Verify markers cluster properly when zoomed out
-
-#### 1.3 Dive Site Database Setup
-We'll create a Supabase database to store dive site information.
-
-**Code we'll write:**
-- SQL schema in `scripts/01-create-dive-sites-table.sql`
-- Define columns: id, name, latitude, longitude, depth, difficulty, description
-- Add indexes on latitude/longitude for fast spatial queries
-- Seed database with 50 MVP dive sites across different oceans
-- SQL script in `scripts/02-seed-dive-sites.sql` with INSERT statements
-
-**Testing:**
-- Run SQL scripts in Supabase dashboard
-- Query database to verify all 50 sites inserted correctly
-- Check indexes are created and working
-- Test spatial queries return sites within a bounding box
-
-#### 1.4 Dive Site Popup Cards
-We'll display detailed information when users click on a marker.
-
-**Code we'll write:**
-- Create `components/dive-site/site-popup.tsx` as a flip card component
-- Front face: dive site image, name, location, rating badge
-- Back face: depth, difficulty, description, "Read More" button
-- Add flip animation using CSS transforms
-- Handle close button to dismiss popup
-
-**Functions we'll use:**
-- `useState()` to track card flip state
-- Click handlers for flip and close actions
-- CSS transitions for smooth 3D flip effect
-- `Popup` component from react-map-gl
-
-**Testing:**
-- Click markers and verify popup opens at correct position
-- Test card flips from front to back smoothly
-- Check close button dismisses popup
-- Verify popup displays all dive site data correctly
-
-#### 1.5 Search Functionality
-We'll add a search bar using Mapbox Geocoding API to find locations.
-
-**Code we'll write:**
-- Create `components/map/search-bar.tsx` with input field
-- Call Mapbox Geocoding API on user input
-- Display autocomplete suggestions in dropdown
-- Pan and zoom map to selected location
-- Handle API errors and loading states
-
-**Functions we'll use:**
-- `fetch()` to call Mapbox Geocoding endpoint
-- `debounce()` to limit API calls while typing
-- `flyTo()` to animate map to search result
-- State management for search results
-
-**Testing:**
-- Type location names and verify suggestions appear
-- Select a result and check map moves to that location
-- Test with various location types (cities, countries, dive sites)
-- Verify error handling when API fails
-
-## Feature 2: Marine Species Integration
-
-We'll connect dive sites to marine species data so users can see what wildlife lives at each location.
-
-### What We'll Build
-
-#### 2.1 Marine Species Database
-We'll fetch and store species data from scientific databases.
-
-**Code we'll write:**
-- Create API route `app/api/species/worms/route.ts` to fetch from WoRMS
-- Create API route `app/api/species/obis/route.ts` to fetch from OBIS
-- Parse JSON responses and extract relevant fields
-- Cache API responses to reduce external calls
-- Store species in Supabase `marine_species` table
-
-**Functions we'll use:**
-- `fetch()` to call WoRMS and OBIS APIs
-- `JSON.parse()` to handle API responses
-- SQL INSERT statements to store species data
-- Next.js API route caching with `revalidate`
-
-**Testing:**
-- Call WoRMS API and verify species data returns correctly
-- Call OBIS API with dive site coordinates
-- Check species are saved to database with all fields
-- Test cache prevents duplicate API calls
-
-#### 2.2 Link Species to Dive Sites
-We'll match species from APIs to our dive sites based on location.
-
-**Code we'll write:**
-- SQL query to get species within radius of dive site coordinates
-- Parse `marine_life` JSON field from dive sites
-- Match species names to WoRMS/OBIS scientific names
-- Create junction table linking sites to species
-- SQL script `scripts/03-link-species-to-sites.sql`
-
-**Functions we'll use:**
-- PostGIS spatial queries (`ST_DWithin()`)
-- `JSON.parse()` to extract species arrays
-- String matching algorithms for fuzzy name matching
-- Batch INSERT statements for efficiency
-
-**Testing:**
-- Query OBIS for species at specific dive site
-- Verify species match those known at the location
-- Check junction table correctly links sites and species
-- Test spatial query performance with large datasets
-
-#### 2.3 Species Display Mode
-We'll add a toggle to switch map from showing dive sites to showing species.
-
-**Code we'll write:**
-- Add state variable `mapMode: 'dive-sites' | 'marine-species'`
-- Create `components/map/species-marker.tsx` for species avatars
-- Fetch unique species from all dive sites' `marine_life` arrays
-- Render circular avatar markers with species photos
-- Add count badge showing number of dive sites with that species
-
-**Functions we'll use:**
-- `Set()` to extract unique species from arrays
-- Conditional rendering based on `mapMode` state
-- Filter and map functions to process species data
-- Toggle handler to switch between modes (fish icon for marine species map)
-
-**Testing:**
-- Click fish icon and verify map switches to species mode
-- Check only species from dive sites appear
-- Verify species count badges show correct numbers
-- Test toggle switches back to dive sites mode
-
-#### 2.4 Species Popup Cards
-We'll display species information when users click on a species marker.
-
-**Code we'll write:**
-- Create `components/marine-species/species-popup.tsx` matching dive site popup design
-- Front face: species photo, common name, scientific name, category badge
-- Back face: habitat, best months to see, number of dive sites
-- Add "View Dive Sites" button to filter map by that species
-- Flip card animation matching dive site cards
-
-**Functions we'll use:**
-- Same flip card logic as dive site popup
-- Click handler for "View Dive Sites" button
-- State update to filter dive sites by selected species
-- CSS animations for card flip
-
-**Testing:**
-- Click species marker and verify popup opens
-- Test card flips to show species details
-- Click "View Dive Sites" and check map filters correctly
-- Verify only dive sites with that species are shown
-
-#### 2.5 Species Carousel
-We'll add a horizontal scrolling carousel showing all species when in species mode.
-
-**Code we'll write:**
-- Create `components/marine-species/species-carousel.tsx`
-- Display species cards with photos, names, and categories
-- Implement horizontal scroll with touch/swipe support
-- Sync carousel with map - clicking a species card centres the map on that species' markers
-- Add smooth scroll behaviour and snap points
-
-**Functions we'll use:**
-- `useRef()` to access carousel DOM element
-- `scrollIntoView()` to centre selected card
-- Touch event handlers for mobile swipe
-- CSS scroll-snap for smooth scrolling
-
-**Testing:**
-- Swipe through carousel and verify smooth scrolling
-- Click a species card and check map updates
-- Test scroll snap aligns cards properly
-- Verify touch gestures work on mobile devices
-
-## Feature 3: Advanced Filtering
-
-We'll add filters to help users find dive sites matching their preferences.
-
-### What We'll Build
-
-#### 3.1 Filter Modal
-We'll create a full-screen filter interface.
-
-**Code we'll write:**
-- Create `components/dive-site/filter-modal.tsx`
-- Add checkboxes for activities (snorkelling, diving, freediving, scuba-diving)
-- Add difficulty level filter (beginner, intermediate, advanced)
-- Add depth range slider
-- Add marine life species selector with icons
-- Apply button to update map with filtered results
-
-**Functions we'll use:**
-- State management for all filter values
-- Array filter methods to match dive sites
-- Range slider component for depth
-- Multi-select component for species
-
-**Testing:**
-- Open filter modal and verify all options display
-- Select multiple filters and check they combine correctly
-- Test depth slider updates min/max values
-- Click apply and verify filtered sites show on map
-
-#### 3.2 Sort Functionality
-We'll add options to sort dive sites by different criteria.
-
-**Code we'll write:**
-- Add sort dropdown to map controls
-- Implement sort by: Most Recent, Highest Rated, Most Reviews, Nearest
-- Calculate distance from user location for "Nearest" sort
-- Update carousel order based on sort selection
-
-**Functions we'll use:**
-- `Array.sort()` with custom comparators
-- Haversine formula to calculate distance
-- `navigator.geolocation` for user position
-- Update state to re-render sorted results
-
-**Testing:**
-- Select each sort option and verify order changes
-- Test "Nearest" uses correct user location
-- Check carousel updates to match new sort order
-- Verify rating sort puts highest rated first
-
-## Feature 4: API Integration and Data Management
-
-We'll set up proper API routes and database queries.
-
-### What We'll Build
-
-#### 4.1 Dive Sites API
-We'll create RESTful endpoints for dive site data.
-
-**Code we'll write:**
-- Create `app/api/dive-sites/route.ts` for GET all sites
-- Create `app/api/dive-sites/[id]/route.ts` for GET single site
-- Add query parameters for filtering (difficulty, depth, species)
-- Add pagination for large result sets
-- Return JSON responses with proper error handling
-
-**Functions we'll use:**
-- Supabase client `select()` queries
-- URL search params parsing
-- Conditional query building based on filters
-- Error handling with try/catch blocks
-
-**Testing:**
-- Call `/api/dive-sites` and verify all sites return
-- Test filters with query params work correctly
-- Call `/api/dive-sites/[id]` with valid ID
-- Test error responses for invalid requests
-
-#### 4.2 Species API
-We'll create endpoints for species data.
-
-**Code we'll write:**
-- Create `app/api/species/route.ts` for GET all species
-- Create `app/api/species/[id]/route.ts` for GET single species
-- Add endpoint to get species at a dive site
-- Cache responses to minimise database calls
-
-**Functions we'll use:**
-- Database joins between species and sites tables
-- Filter species by category
-- Return species with dive site count
-
-**Testing:**
-- Fetch all species and check response structure
-- Get species for a specific dive site
-- Verify joins return correct data
-- Test caching prevents redundant queries
-
-## Testing Strategy
-
-For each feature, we'll follow this testing approach:
-
-1. **Unit Tests** - Test individual functions in isolation
-2. **Integration Tests** - Test components with API calls
-3. **Manual Testing** - Use app in browser and verify behaviour
-4. **Edge Cases** - Test with missing data, errors, slow connections
-5. **Mobile Testing** - Check responsiveness on phone screens
-6. **Performance** - Verify fast load times and smooth interactions
-
-We'll fix bugs immediately as they appear and document any issues in the project tracker.
-
-## Success Criteria
-
-The Proof of Concept will be considered successful when:
-
-- Map displays correctly with all 50+ dive sites
-- Users can click markers and see detailed information
-- Search finds locations and moves the map
-- Species mode shows marine life at map
-- Filters and sorting work as expected
-- All APIs return data without errors
-- App works smoothly on mobile and desktop
-- Page load time is under 3 seconds
-- No critical bugs in core functionality
-
-Once validated, we'll move to
-Phase 2: scaling to 100+ dive sites, dive site and marine species images, or integrate a paid dive site API
-Phase 3: user accounts, dive plans
-Phase 4: dive logging, sync with dive computers
-Phase 5: sharing features
+# Seafolio Dive App - Implementation Plan
+
+Notion https://www.notion.so/3216bc397f2180198696d4ddfe4af5f5?v=3216bc397f218064a798000cea12a51f
+
+# Dive App - Tracer Bullet Roadmap
+
+> Each bullet is a traceable feature combining Frontend + Backend + Database.
+> Deadlines aligned with university sprint schedule (Feb 9 - Jun 30, 2026).
+
+---
+
+## Timeline Overview
+
+| Phase | Dates | Focus |
+|-------|-------|-------|
+| Sprint 1 | Feb 26 - Mar 12 | Figma Refinement + Core Setup |
+| Sprint 2 | Mar 12 - Mar 26 | Explore Page (Home) |
+| Sprint 3 | Mar 26 - Apr 23 | Dive Site Details + Plan Feature |
+| Sprint 4 | Apr 23 - May 7 | Start Dive + Logbook |
+| Sprint 5 | May 7 - May 21 | Profile/Memories + Polish |
+| Sprint 6 (FP Focus) | May 21 - Jun 10 | Final Polish + Testing + Upload |
+| Jury | Jun 17 | Final Presentation |
+
+---
+
+## Tracer Bullet 1: Figma Prototype Refinement
+**Sprint:** Pre-Sprint / Sprint 1 (Feb 12 - March 26)
+**Deadline:** Thu Mar 26 (Mid-term eval)
+
+### Scope
+- Refine all app pages based on UX testing results
+- Update user flows and navigation patterns
+- Finalize design system (colors, typography, components)
+- Create component library in Figma
+
+### Pages to Refine
+- [ ] Explore (Home) page with map, search, filters
+- [ ] Dive Site Overview modal/page
+- [ ] Plan page (saved dive sites/trips)
+- [ ] Start Dive flow
+- [ ] Logbook page
+- [ ] Profile/Memories page
+- [ ] Edit Profile page
+
+### Deliverables
+- [ ] Updated Figma prototype with all screens
+- [ ] User flow diagrams
+- [ ] Design system documentation
+- [ ] Clickable prototype for stakeholder review
+
+### Testing Criteria
+- [ ] User flow walkthrough with 3+ test users
+- [ ] All screens match design system
+- [ ] Navigation is intuitive (< 3 clicks to any feature)
+- [ ] Accessibility review (contrast, touch targets)
+
+---
+
+## Tracer Bullet 2: Explore Page (Home)
+**Sprint:** Sprint 2 (Mar 26 - April 2)
+**Deadline:** April 2
+
+### Scope
+User can browse dive sites, dive trips, and marine life on an interactive map with search and filters.
+
+### Frontend
+- [ ] Interactive map with dive site markers
+- [ ] Search bar: "Search dive sites, trips, species"
+- [ ] Filter modal with depth, difficulty, marine life filters
+- [ ] Tab navigation: Dive Sites | Trips | Marine Life
+- [ ] Dive site carousel cards with "Add to Plan" + "View Details"
+- [ ] Map controls (zoom, location, nearby sites, marine life toggle)
+- [ ] Bottom navigation: Explore | Plan | Dive | Logbook | Memories
+
+### Backend (API Routes)
+- [ ] `GET /api/dive-sites` - List all dive sites with filters
+- [ ] `GET /api/dive-sites/[id]` - Single dive site details
+- [ ] `GET /api/dive-trips` - List dive trips
+- [ ] `GET /api/marine-life` - List marine species
+- [ ] `GET /api/search` - Universal search endpoint
+
+### Database Schema
+```sql
+-- dive_sites table
+CREATE TABLE dive_sites (
+  id UUID PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  description TEXT,
+  location VARCHAR(255),
+  latitude DECIMAL(10, 8),
+  longitude DECIMAL(11, 8),
+  max_depth_meters INTEGER,
+  difficulty VARCHAR(50), -- beginner, intermediate, advanced
+  visibility_meters INTEGER,
+  water_temp_celsius DECIMAL(4, 1),
+  rating DECIMAL(2, 1),
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- dive_trips table
+CREATE TABLE dive_trips (
+  id UUID PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  dive_site_id UUID REFERENCES dive_sites(id),
+  duration_days INTEGER,
+  num_dives INTEGER,
+  price_usd DECIMAL(10, 2),
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- marine_species table
+CREATE TABLE marine_species (
+  id UUID PRIMARY KEY,
+  name VARCHAR(255) NOT NULL,
+  scientific_name VARCHAR(255),
+  category VARCHAR(100), -- fish, mollusk, coral, etc.
+  description TEXT,
+  image_url TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- dive_site_species junction table
+CREATE TABLE dive_site_species (
+  dive_site_id UUID REFERENCES dive_sites(id),
+  species_id UUID REFERENCES marine_species(id),
+  PRIMARY KEY (dive_site_id, species_id)
+);
+```
+
+### Testing Criteria
+- [ ] Map loads with 50+ dive site markers
+- [ ] Search returns results in < 500ms
+- [ ] Filters correctly narrow results
+- [ ] Tab switching works without page reload
+- [ ] Carousel swipes smoothly on mobile
+- [ ] "Add to Plan" shows confirmation feedback
+- [ ] All API endpoints return valid JSON
+
+---
+
+## Tracer Bullet 3: Dive Site Details + Add to Plan
+**Sprint:** Sprint 3 (April 2 - Apr 23)
+**Deadline:** Thu Apr 23
+
+### Scope
+User can view detailed dive site information and add sites to their dive plan.
+
+### Frontend
+- [ ] Dive Site Overview page/modal
+  - Hero image with back/share buttons
+  - Site name, rating, location
+  - Tabs: Overview | Marine Life | Dive Trips | Reviews
+  - CTAs: "Add to Plan" + "Start Dive"
+  - Overview section with description + info chips
+  - Highlights carousel (species, depth, features)
+  - Site information cards (temp, depth, visibility, signal)
+  - Species section with category filters
+  - Reviews section with rating breakdown
+- [ ] Plan page showing saved dive sites/trips
+- [ ] Remove from plan functionality
+
+### Backend (API Routes)
+- [ ] `GET /api/dive-sites/[id]/details` - Full site details with species, reviews
+- [ ] `POST /api/user/plan` - Add site to user's plan
+- [ ] `DELETE /api/user/plan/[id]` - Remove from plan
+- [ ] `GET /api/user/plan` - Get user's saved plan items
+- [ ] `GET /api/dive-sites/[id]/reviews` - Site reviews
+
+### Database Schema
+```sql
+-- user_plans table
+CREATE TABLE user_plans (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  dive_site_id UUID REFERENCES dive_sites(id),
+  dive_trip_id UUID REFERENCES dive_trips(id),
+  added_at TIMESTAMP DEFAULT NOW(),
+  notes TEXT,
+  planned_date DATE
+);
+
+-- reviews table
+CREATE TABLE reviews (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  dive_site_id UUID REFERENCES dive_sites(id),
+  rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+  location_rating DECIMAL(2, 1),
+  water_cleanliness_rating DECIMAL(2, 1),
+  content TEXT,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### Testing Criteria
+- [ ] Dive site details load in < 1s
+- [ ] All tabs display correct content
+- [ ] "Add to Plan" persists across sessions
+- [ ] Plan page shows all saved items
+- [ ] Remove from plan updates UI immediately
+- [ ] Reviews display with correct ratings
+- [ ] Share button copies link / opens share sheet
+
+---
+
+## Tracer Bullet 4: Start Dive + Active Dive Session
+**Sprint:** Sprint 4 (Apr 23 - May 7)
+**Deadline:** Thu May 7
+
+### Scope
+User can start a dive session, track dive data, and end the dive.
+
+### Frontend
+- [ ] Start Dive confirmation screen
+  - Safety checklist
+  - Buddy confirmation
+  - Equipment check
+- [ ] Active Dive screen
+  - Timer / duration
+  - Depth indicator (if connected to device)
+  - Quick species log button
+  - Emergency surface button
+- [ ] End Dive flow
+  - Dive summary
+  - Species spotted selector
+  - Notes input
+  - Rating input
+  - Save to logbook
+
+### Backend (API Routes)
+- [ ] `POST /api/dives/start` - Start new dive session
+- [ ] `PUT /api/dives/[id]/update` - Update active dive data
+- [ ] `POST /api/dives/[id]/end` - End dive and save
+- [ ] `POST /api/dives/[id]/species` - Log species during dive
+- [ ] `GET /api/dives/active` - Get current active dive
+
+### Database Schema
+```sql
+-- dives table
+CREATE TABLE dives (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  dive_site_id UUID REFERENCES dive_sites(id),
+  started_at TIMESTAMP NOT NULL,
+  ended_at TIMESTAMP,
+  duration_minutes INTEGER,
+  max_depth_meters DECIMAL(5, 1),
+  water_temp_celsius DECIMAL(4, 1),
+  visibility_meters INTEGER,
+  notes TEXT,
+  rating INTEGER CHECK (rating >= 1 AND rating <= 5),
+  status VARCHAR(20) DEFAULT 'active', -- active, completed, cancelled
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- dive_species_log table
+CREATE TABLE dive_species_log (
+  id UUID PRIMARY KEY,
+  dive_id UUID REFERENCES dives(id),
+  species_id UUID REFERENCES marine_species(id),
+  spotted_at TIMESTAMP DEFAULT NOW(),
+  quantity INTEGER DEFAULT 1,
+  notes TEXT
+);
+```
+
+### Testing Criteria
+- [ ] Start dive creates new session in DB
+- [ ] Timer increments correctly
+- [ ] Species can be logged mid-dive
+- [ ] End dive saves all data
+- [ ] Dive appears in logbook after completion
+- [ ] Edge case: app backgrounded during dive
+- [ ] Edge case: network loss during dive
+
+---
+
+## Tracer Bullet 5: Logbook
+**Sprint:** Sprint 4-5 (Apr 30 - May 14)
+**Deadline:** Thu May 14
+
+### Scope
+User can view their dive history with statistics and details.
+
+### Frontend
+- [ ] Logbook page
+  - Dive statistics summary (total dives, total time, deepest dive)
+  - Dive list with cards (date, site, duration, depth)
+  - Filter by date range, site, rating
+  - Search dives
+- [ ] Dive detail view
+  - Full dive information
+  - Species spotted list
+  - Photos (if any)
+  - Notes
+  - Edit capability
+
+### Backend (API Routes)
+- [ ] `GET /api/user/dives` - List user's dives with pagination
+- [ ] `GET /api/user/dives/[id]` - Single dive details
+- [ ] `PUT /api/user/dives/[id]` - Update dive notes/rating
+- [ ] `GET /api/user/dives/stats` - User dive statistics
+- [ ] `DELETE /api/user/dives/[id]` - Delete dive
+
+### Database Schema
+```sql
+-- (uses existing dives table)
+
+-- dive_photos table
+CREATE TABLE dive_photos (
+  id UUID PRIMARY KEY,
+  dive_id UUID REFERENCES dives(id),
+  image_url TEXT NOT NULL,
+  caption TEXT,
+  uploaded_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### Testing Criteria
+- [ ] Logbook loads with 100+ dives efficiently
+- [ ] Statistics calculate correctly
+- [ ] Filters work in combination
+- [ ] Dive detail shows all logged species
+- [ ] Edit saves changes
+- [ ] Delete removes dive with confirmation
+
+---
+
+## Tracer Bullet 6: Profile / Memories
+**Sprint:** Sprint 5 (May 7 - May 21)
+**Deadline:** Thu May 21
+
+### Scope
+User can view and edit their profile, see achievements, and browse dive memories.
+
+### Frontend
+- [ ] Profile page
+  - Cover photo + avatar
+  - Name, username, diver level badge
+  - Following/friends count
+  - Collected section (species discovered, logged dives)
+  - Species categories breakdown
+  - Favorite species carousel
+  - Badges/achievements
+  - Settings menu
+- [ ] Edit Profile page
+  - Change cover photo
+  - Change avatar
+  - Edit name, username, bio, location
+  - Diver level selector
+  - Social links
+  - Privacy settings
+- [ ] Memories gallery (dive photos timeline)
+
+### Backend (API Routes)
+- [ ] `GET /api/user/profile` - Get user profile
+- [ ] `PUT /api/user/profile` - Update profile
+- [ ] `POST /api/user/avatar` - Upload avatar image
+- [ ] `POST /api/user/cover` - Upload cover image
+- [ ] `GET /api/user/badges` - Get user achievements
+- [ ] `GET /api/user/species-stats` - Species discovery stats
+- [ ] `GET /api/user/memories` - Photo gallery
+
+### Database Schema
+```sql
+-- users table
+CREATE TABLE users (
+  id UUID PRIMARY KEY,
+  email VARCHAR(255) UNIQUE NOT NULL,
+  password_hash VARCHAR(255) NOT NULL,
+  display_name VARCHAR(100),
+  username VARCHAR(50) UNIQUE,
+  bio TEXT,
+  location VARCHAR(100),
+  diver_level VARCHAR(50), -- beginner, hobby, advanced, professional, instructor
+  avatar_url TEXT,
+  cover_url TEXT,
+  instagram_handle VARCHAR(100),
+  website_url TEXT,
+  show_dive_log_public BOOLEAN DEFAULT true,
+  allow_friend_requests BOOLEAN DEFAULT true,
+  show_location_on_dives BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- user_badges table
+CREATE TABLE user_badges (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  badge_type VARCHAR(50), -- first_dive, species_100, depth_30m, etc.
+  earned_at TIMESTAMP DEFAULT NOW()
+);
+
+-- user_species_discovered table
+CREATE TABLE user_species_discovered (
+  user_id UUID REFERENCES users(id),
+  species_id UUID REFERENCES marine_species(id),
+  first_seen_dive_id UUID REFERENCES dives(id),
+  discovered_at TIMESTAMP DEFAULT NOW(),
+  PRIMARY KEY (user_id, species_id)
+);
+```
+
+### Testing Criteria
+- [ ] Profile loads with correct stats
+- [ ] Edit profile saves all fields
+- [ ] Image upload works (< 5MB limit)
+- [ ] Badges display correctly
+- [ ] Species stats match dive logs
+- [ ] Privacy settings apply correctly
+- [ ] Memories gallery loads efficiently
+
+---
+
+## Tracer Bullet 7: Authentication
+**Sprint:** Sprint 5-6 (May 14 - May 28)
+**Deadline:** Thu May 28
+
+### Scope
+User can sign up, log in, and manage their session.
+
+### Frontend
+- [ ] Sign up page (email, password, confirm)
+- [ ] Login page
+- [ ] Forgot password flow
+- [ ] Session persistence
+- [ ] Protected routes
+
+### Backend (API Routes)
+- [ ] `POST /api/auth/signup` - Create account
+- [ ] `POST /api/auth/login` - Login
+- [ ] `POST /api/auth/logout` - Logout
+- [ ] `POST /api/auth/forgot-password` - Request reset
+- [ ] `POST /api/auth/reset-password` - Reset password
+- [ ] `GET /api/auth/session` - Get current session
+
+### Database Schema
+```sql
+-- (uses existing users table)
+
+-- sessions table
+CREATE TABLE sessions (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  token VARCHAR(255) UNIQUE NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+
+-- password_resets table
+CREATE TABLE password_resets (
+  id UUID PRIMARY KEY,
+  user_id UUID REFERENCES users(id),
+  token VARCHAR(255) UNIQUE NOT NULL,
+  expires_at TIMESTAMP NOT NULL,
+  used BOOLEAN DEFAULT false,
+  created_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### Testing Criteria
+- [ ] Sign up creates user with hashed password
+- [ ] Login returns valid session token
+- [ ] Protected routes redirect to login
+- [ ] Session persists across browser refresh
+- [ ] Logout clears session
+- [ ] Password reset email sends correctly
+
+---
+
+## Tracer Bullet 8: Final Polish + QA
+**Sprint:** Sprint 6 / FP Focus (May 28 - Jun 10)
+**Deadline:** Wed Jun 10 (Upload)
+
+### Scope
+Final bug fixes, performance optimization, and quality assurance.
+
+### Tasks
+- [ ] Cross-browser testing (Chrome, Safari, Firefox)
+- [ ] Mobile responsiveness audit
+- [ ] Performance optimization (< 3s initial load)
+- [ ] Accessibility audit (WCAG 2.1 AA)
+- [ ] Error handling for all API calls
+- [ ] Loading states for all async operations
+- [ ] Empty states for lists
+- [ ] Offline handling / error messages
+- [ ] Analytics integration
+- [ ] Final design polish
+
+### Testing Criteria
+- [ ] All user flows work end-to-end
+- [ ] No console errors in production
+- [ ] Lighthouse score > 90 (Performance, Accessibility)
+- [ ] Works on iOS Safari + Android Chrome
+- [ ] All edge cases handled gracefully
+
+---
+
+## Key Milestones
+
+| Date | Milestone |
+|------|-----------|
+| Thu March 26 | Sprint 1 Start - Figma Complete |
+| Thu April 2 | Mid-term Eval - Explore Page Complete |
+| Thu Apr 23 | Sprint 4 Start - Dive Details + Plan Complete |
+| Thu May 7 | Sprint 5 Start - Start Dive + Logbook Complete |
+| Thu May 21 | FP Focus Start - Profile Complete |
+| Wed Jun 10 | Upload Deadline - All Features Complete |
+| Thu Jun 11 | S15 - Final Review |
+| Wed Jun 17 | Jury Presentation |
+| Tue Jun 30 | Ceremony |
+
+---
+
+## Risk Register
+
+| Risk | Mitigation |
+|------|------------|
+| Database integration delays | Start with mock data, swap later |
+| Complex map interactions | Use established library (Mapbox/Leaflet) |
+| Image upload complexity | Use Vercel Blob storage |
+| Authentication security | Use established patterns (bcrypt, httpOnly cookies) |
+| Time constraints | Prioritize core features, cut nice-to-haves |
+
+---
+
+## Definition of Done
+
+A feature is complete when:
+1. Frontend UI matches Figma design
+2. Backend API endpoints working
+3. Database schema migrated
+4. Unit tests passing
+5. Manual QA completed
+6. No console errors
+7. Works on mobile and desktop
+
