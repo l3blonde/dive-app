@@ -9,6 +9,7 @@ import { SpeciesBrowser } from "./marine-species/species-browser"
 import { MapControls } from "./map/map-controls"
 import { SearchBar } from "./search/search-bar"
 import { BottomNav } from "./navigation/bottom-nav"
+import { BottomSheet } from "./explore/bottom-sheet"
 import { SiteCarousel } from "./dive-site/site-carousel"
 import type { MarineSpecies } from "@/lib/types"
 import type { DiveSite } from "@/lib/types"
@@ -624,16 +625,9 @@ export function DiveMap() {
             )}
 
             {isBottomSheetOpen && filteredDiveSites.length > 0 && (
-                <SiteCarousel
-                    sites={filteredDiveSites}
-                    onCardClick={(site) => {
-                        setSelectedSite(site)
-                        setIsBottomSheetOpen(false)
-                        setIsDescriptionExpanded(false)
-                    }}
-                    onClose={handleOverlayClick}
-                    getDifficultyIcon={getDifficultyIcon}
-                    onIndexChange={setCurrentCardIndex}
+                <BottomSheet
+                    diveSites={filteredDiveSites}
+                    onClose={() => setIsBottomSheetOpen(false)}
                 />
             )}
 
