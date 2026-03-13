@@ -1,7 +1,7 @@
 // Type definitions for dive site data structures
 // These interfaces define the shape of data we get from the database
+// Cache refresh: v0 compiler sync
 
-// DiveSite interface: defines structure of dive site records (used in dive-map.tsx)
 export interface DiveSite {
     id: string
     name: string
