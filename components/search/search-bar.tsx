@@ -1,15 +1,20 @@
 "use client"
 
-import { useState } from "react"
 import { Search, SlidersHorizontal } from "lucide-react"
 
 interface SearchBarProps {
+    searchQuery: string
+    onSearchChange: (query: string) => void
     onToggleFilters: () => void
+    placeholder?: string
 }
 
-export function SearchBar({ onToggleFilters }: SearchBarProps) {
-    const [searchQuery, setSearchQuery] = useState("")
-
+export function SearchBar({ 
+    searchQuery, 
+    onSearchChange, 
+    onToggleFilters,
+    placeholder = "Search dive trips, dive sites, marine life"
+}: SearchBarProps) {
     return (
         <div
             style={{
@@ -29,31 +34,32 @@ export function SearchBar({ onToggleFilters }: SearchBarProps) {
                     width: "100%",
                     maxWidth: "500px",
                     display: "flex",
-                    gap: "10px",
+                    gap: "12px",
                     alignItems: "center",
                     background: "rgba(255, 255, 255, 0.12)",
                     backdropFilter: "blur(12px)",
                     WebkitBackdropFilter: "blur(12px)",
-                    borderRadius: "24px",
+                    borderRadius: "28px",
                     border: "1px solid rgba(255, 255, 255, 0.25)",
-                    padding: "12px 16px",
+                    padding: "14px 20px",
+                    boxShadow: "0 4px 24px rgba(0, 0, 0, 0.15), 0 0 16px rgba(0, 194, 215, 0.1)",
                 }}
             >
                 {/* Search Icon */}
-                <Search size={20} color="white" strokeWidth={1.8} />
+                <Search size={20} color="rgba(255, 255, 255, 0.7)" strokeWidth={1.8} />
 
                 {/* Input */}
                 <input
                     type="text"
-                    placeholder="Search dive sites, trips, marine life"
+                    placeholder={placeholder}
                     value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
+                    onChange={(e) => onSearchChange(e.target.value)}
                     style={{
                         flex: 1,
                         border: "none",
                         background: "transparent",
                         color: "white",
-                        fontSize: "14px",
+                        fontSize: "15px",
                         outline: "none",
                         fontFamily: "inherit",
                     }}
@@ -63,23 +69,24 @@ export function SearchBar({ onToggleFilters }: SearchBarProps) {
                 <button
                     onClick={onToggleFilters}
                     style={{
-                        background: "transparent",
+                        background: "rgba(255, 255, 255, 0.1)",
                         border: "none",
+                        borderRadius: "10px",
                         cursor: "pointer",
                         display: "flex",
                         alignItems: "center",
-                        padding: "4px",
+                        padding: "8px",
                         transition: "all 0.2s",
                     }}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.opacity = "0.8"
+                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.2)"
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.opacity = "1"
+                        e.currentTarget.style.background = "rgba(255, 255, 255, 0.1)"
                     }}
                     title="Filter"
                 >
-                    <SlidersHorizontal size={20} color="white" strokeWidth={1.8} />
+                    <SlidersHorizontal size={18} color="white" strokeWidth={1.8} />
                 </button>
             </div>
         </div>

@@ -207,6 +207,11 @@
 .mapboxgl-ctrl-bottom-right {
     display: none !important;
 }
+
+/* Hide Mapbox default navigation controls - using custom controls */
+.mapboxgl-ctrl-top-right {
+    display: none !important;
+}
 /* </CHANGE> */
 
 /* Hide scrollbar for 3D species carousel */

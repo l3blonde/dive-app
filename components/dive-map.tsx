@@ -239,6 +239,13 @@ export function DiveMap() {
         setCurrentCardIndex(0)
     }, [isBottomSheetOpen, searchQuery])
 
+    // Auto-open bottom sheet when search has results
+    useEffect(() => {
+        if (searchQuery.trim() !== "" && filteredDiveSites.length > 0) {
+            setIsBottomSheetOpen(true)
+        }
+    }, [searchQuery])
+
     const filteredDiveSites = diveSites
         .filter((site: DiveSiteWithMarineLife) => {
             if (searchQuery.trim() !== "") {
@@ -370,7 +377,7 @@ export function DiveMap() {
                 <BottomNav
                     activeTab={activeTab}
                     onTabChange={setActiveTab}
-                    onSearchOpen={() => setSearchOpen(true)}
+                    onSearchOpen={() => setSearchOpen(!searchOpen)}
                     searchOpen={searchOpen}
                 />
             </div>
@@ -424,22 +431,13 @@ export function DiveMap() {
 
             {/* Relative container for map and controls */}
             <div style={{ position: "relative", width: "100%", height: "100%", zIndex: 1 }}>
-            <SearchBar
-                isOpen={searchOpen}
-                searchQuery={searchQuery}
-                onSearchChange={setSearchQuery}
-                onClose={handleSearchClose}
-                filters={filters}
-                onFilterChange={setFilters}
-                resultsCount={filteredDiveSites.length}
-                showFilters={showFilters}
-                onToggleFilters={() => setShowFilters(!showFilters)}
-                onReset={handleSearchReset}
-                allDiveSites={diveSites}
-                onLocationSelect={handleLocationSelect}
-                onDiveSiteSelect={handleDiveSiteSelect}
-                onSearchExecute={handleSearchExecute}
-            />
+            {searchOpen && (
+                <SearchBar
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
+                    onToggleFilters={() => setShowFilters(!showFilters)}
+                />
+            )}
 
             {isSpeciesBrowserOpen && (
                 <SpeciesBrowser
@@ -469,7 +467,23 @@ export function DiveMap() {
                     left: 0,
                 }}
             >
-                <MapControls onMarineSpeciesClick={handleMarineSpeciesClick} />
+                <MapControls 
+                    onMarineSpeciesClick={handleMarineSpeciesClick}
+                    mapMode={isSpeciesMode ? "marine-species" : "dive-sites"}
+                    onZoomIn={() => mapRef.current?.zoomIn()}
+                    onZoomOut={() => mapRef.current?.zoomOut()}
+                    onLocate={() => {
+                        if (navigator.geolocation) {
+                            navigator.geolocation.getCurrentPosition((position) => {
+                                mapRef.current?.flyTo({
+                                    center: [position.coords.longitude, position.coords.latitude],
+                                    zoom: 12,
+                                    duration: 2000,
+                                })
+                            })
+                        }
+                    }}
+                />
 
                 {!isSpeciesMode &&
                     !isSpeciesBrowserOpen &&
@@ -625,9 +639,11 @@ export function DiveMap() {
             )}
 
             {isBottomSheetOpen && filteredDiveSites.length > 0 && (
-                <BottomSheet
+<BottomSheet
                     diveSites={filteredDiveSites}
                     onClose={() => setIsBottomSheetOpen(false)}
+                    onViewDetails={(site) => handleDiveSiteSelect(site as DiveSiteWithMarineLife)}
+                    onAddToPlan={(site) => console.log("Add to plan:", site.name)}
                 />
             )}
 
@@ -675,7 +691,7 @@ export function DiveMap() {
             <BottomNav
                 activeTab={activeTab}
                 onTabChange={setActiveTab}
-                onSearchOpen={() => setSearchOpen(true)}
+                onSearchOpen={() => setSearchOpen(!searchOpen)}
                 searchOpen={searchOpen}
             />
 

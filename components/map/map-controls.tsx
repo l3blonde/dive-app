@@ -1,80 +1,138 @@
 "use client"
 
-import { NavigationControl, GeolocateControl } from "react-map-gl/mapbox"
-import { Fish, Anchor } from "lucide-react"
+import { MapPin, Plus, Minus, Compass, Fish, Waves } from "lucide-react"
 
 interface MapControlsProps {
     onMarineSpeciesClick: () => void
     mapMode?: "dive-sites" | "marine-species"
-    onNearbyClick?: () => void
+    onZoomIn?: () => void
+    onZoomOut?: () => void
+    onLocate?: () => void
 }
 
-export function MapControls({ onMarineSpeciesClick, mapMode = "dive-sites", onNearbyClick }: MapControlsProps) {
-    const buttonBase: React.CSSProperties = {
-        position: "absolute",
-        right: "10px",
-        width: "40px",
-        height: "40px",
-        backgroundColor: "rgba(255, 255, 255, 0.15)",
-        backdropFilter: "blur(10px)",
-        WebkitBackdropFilter: "blur(10px)",
-        borderRadius: "4px",
-        border: "1px solid rgba(255, 255, 255, 0.25)",
-        boxShadow: "0 0 12px rgba(0, 194, 215, 0.3)",
+export function MapControls({ 
+    onMarineSpeciesClick, 
+    mapMode = "dive-sites",
+    onZoomIn,
+    onZoomOut,
+    onLocate,
+}: MapControlsProps) {
+    const buttonStyle: React.CSSProperties = {
+        width: "44px",
+        height: "44px",
+        backgroundColor: "rgba(255, 255, 255, 0.12)",
+        backdropFilter: "blur(12px)",
+        WebkitBackdropFilter: "blur(12px)",
+        borderRadius: "12px",
+        border: "1px solid rgba(255, 255, 255, 0.2)",
+        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 194, 215, 0.2)",
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        zIndex: 10,
-        transition: "all 0.2s",
+        transition: "all 0.2s ease",
+    }
+
+    const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)"
+        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 194, 215, 0.4)"
+    }
+
+    const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>, isActive = false) => {
+        e.currentTarget.style.backgroundColor = isActive ? "rgba(0, 194, 215, 0.25)" : "rgba(255, 255, 255, 0.12)"
+        e.currentTarget.style.boxShadow = isActive 
+            ? "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 194, 215, 0.5)"
+            : "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 194, 215, 0.2)"
     }
 
     return (
-        <>
-            <GeolocateControl position="top-right" trackUserLocation={true} showUserHeading={true} />
-            <NavigationControl position="top-right" showCompass={true} showZoom={true} />
+        <div
+            style={{
+                position: "absolute",
+                top: "100px",
+                right: "16px",
+                display: "flex",
+                flexDirection: "column",
+                gap: "8px",
+                zIndex: 10,
+            }}
+        >
+            {/* Compass */}
+            <button
+                style={buttonStyle}
+                title="Compass"
+                aria-label="Compass"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={(e) => handleMouseLeave(e)}
+            >
+                <Compass size={20} color="white" strokeWidth={1.6} />
+            </button>
 
-            {/* Marine species / dive sites toggle */}
+            {/* Location */}
+            <button
+                onClick={onLocate}
+                style={buttonStyle}
+                title="My location"
+                aria-label="My location"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={(e) => handleMouseLeave(e)}
+            >
+                <MapPin size={20} color="white" strokeWidth={1.6} />
+            </button>
+
+            {/* Zoom In */}
+            <button
+                onClick={onZoomIn}
+                style={buttonStyle}
+                title="Zoom in"
+                aria-label="Zoom in"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={(e) => handleMouseLeave(e)}
+            >
+                <Plus size={20} color="white" strokeWidth={1.6} />
+            </button>
+
+            {/* Zoom Out */}
+            <button
+                onClick={onZoomOut}
+                style={buttonStyle}
+                title="Zoom out"
+                aria-label="Zoom out"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={(e) => handleMouseLeave(e)}
+            >
+                <Minus size={20} color="white" strokeWidth={1.6} />
+            </button>
+
+            {/* Fish / Marine Life Toggle */}
             <button
                 onClick={onMarineSpeciesClick}
                 style={{
-                    ...buttonBase,
-                    top: "32%",
-                    transform: "translateY(-50%)",
-                    backgroundColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.3)" : "rgba(255, 255, 255, 0.15)",
-                    borderColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.5)" : "rgba(255, 255, 255, 0.25)",
+                    ...buttonStyle,
+                    backgroundColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.25)" : "rgba(255, 255, 255, 0.12)",
+                    borderColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.5)" : "rgba(255, 255, 255, 0.2)",
+                    boxShadow: mapMode === "marine-species" 
+                        ? "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 194, 215, 0.5)"
+                        : "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 194, 215, 0.2)",
                 }}
                 title={mapMode === "dive-sites" ? "View marine species" : "View dive sites"}
                 aria-label={mapMode === "dive-sites" ? "Marine species mode" : "Dive sites mode"}
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = mapMode === "marine-species" ? "rgba(0, 194, 215, 0.4)" : "rgba(255, 255, 255, 0.25)"
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = mapMode === "marine-species" ? "rgba(0, 194, 215, 0.3)" : "rgba(255, 255, 255, 0.15)"
-                }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={(e) => handleMouseLeave(e, mapMode === "marine-species")}
             >
-                <Fish size={22} color={mapMode === "marine-species" ? "#00C2D7" : "white"} strokeWidth={1.8} />
+                <Fish size={20} color={mapMode === "marine-species" ? "#00C2D7" : "white"} strokeWidth={1.6} />
             </button>
 
-            {/* Nearby dive sites — Anchor icon */}
+            {/* Waves / Layers */}
             <button
-                onClick={onNearbyClick}
-                style={{
-                    ...buttonBase,
-                    top: "calc(32% + 52px)",
-                    transform: "translateY(-50%)",
-                }}
-                title="Nearby dive sites"
-                aria-label="Nearby dive sites"
-                onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.25)"
-                }}
-                onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.15)"
-                }}
+                style={buttonStyle}
+                title="Map layers"
+                aria-label="Map layers"
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={(e) => handleMouseLeave(e)}
             >
-                <Anchor size={22} color="white" strokeWidth={1.8} />
+                <Waves size={20} color="white" strokeWidth={1.6} />
             </button>
-        </>
+        </div>
     )
 }
