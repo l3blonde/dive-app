@@ -35,7 +35,7 @@ interface BottomNavProps {
 
 const NAV_TABS = [
     {
-        id: "home",
+        id: "explore",
         icon: "M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7",
         label: "Explore",
         custom: null,
@@ -59,7 +59,7 @@ const NAV_TABS = [
         custom: null,
     },
     {
-        id: "profile",
+        id: "memories",
         icon: null,
         label: "Memories",
         custom: "shell",
@@ -76,30 +76,31 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                 right: 0,
                 zIndex: 1002,
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                justifyContent: "center",
+                alignItems: "flex-end",
                 padding: "12px 16px 20px 16px",
-                gap: "12px",
             }}
         >
             <div
                 style={{
                     display: "flex",
-                    background: "rgba(255, 255, 255, 0.12)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    border: "1px solid rgba(255, 255, 255, 0.2)",
+                    background: "rgba(6, 43, 61, 0.4)",
+                    backdropFilter: "blur(16px)",
+                    WebkitBackdropFilter: "blur(16px)",
+                    border: "1px solid rgba(0, 194, 215, 0.15)",
                     borderRadius: "32px",
                     padding: "8px 12px",
-                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2)",
-                    flex: 1,
+                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
                     justifyContent: "space-around",
                     gap: "4px",
+                    maxWidth: "100%",
                 }}
             >
                 {NAV_TABS.map((tab) => {
                     const isActive = activeTab === tab.id
-                    const color = isActive ? "#1A1A33" : "#6A6A6A"
+                    const iconColor = isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.5)"
+                    const textColor = isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.5)"
+                    
                     return (
                         <button
                             key={tab.id}
@@ -111,47 +112,43 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                                 alignItems: "center",
                                 gap: "4px",
                                 background: isActive 
-                                    ? "rgba(0, 194, 215, 0.35)" 
+                                    ? "rgba(0, 194, 215, 0.2)" 
                                     : "transparent",
                                 border: isActive ? "1.5px solid rgba(0, 194, 215, 0.6)" : "none",
                                 cursor: "pointer",
                                 padding: "8px 4px",
-                                borderRadius: "16px",
-                                transition: "all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)",
+                                borderRadius: "9999px",
+                                transition: "all 0.2s ease-out",
                                 boxShadow: isActive 
-                                    ? "0 0 20px rgba(0, 194, 215, 0.5), inset 0 0 15px rgba(0, 194, 215, 0.2)" 
+                                    ? "0 0 24px rgba(0, 194, 215, 0.6), 0 0 48px rgba(0, 194, 215, 0.3), inset 0 0 16px rgba(0, 194, 215, 0.15)"
                                     : "none",
                             }}
                             onMouseEnter={(e) => {
-                                if (isActive) {
-                                    e.currentTarget.style.boxShadow = "0 0 28px rgba(0, 194, 215, 0.7), inset 0 0 20px rgba(0, 194, 215, 0.3)"
-                                } else {
-                                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.08)"
+                                if (!isActive) {
+                                    e.currentTarget.style.background = "rgba(255, 255, 255, 0.05)"
                                 }
                             }}
                             onMouseLeave={(e) => {
-                                if (isActive) {
-                                    e.currentTarget.style.boxShadow = "0 0 20px rgba(0, 194, 215, 0.5), inset 0 0 15px rgba(0, 194, 215, 0.2)"
-                                } else {
+                                if (!isActive) {
                                     e.currentTarget.style.background = "transparent"
                                 }
                             }}
                         >
                             {tab.custom === "mask" ? (
-                                <DiverMaskIcon color={color} />
+                                <DiverMaskIcon color={iconColor} />
                             ) : tab.custom === "shell" ? (
-                                <Shell size={24} color={color} strokeWidth={1.6} />
+                                <Shell size={24} color={iconColor} strokeWidth={1.6} />
                             ) : (
                                 <svg
                                     width="24"
                                     height="24"
                                     viewBox="0 0 24 24"
                                     fill="none"
-                                    stroke={color}
+                                    stroke={iconColor}
                                     strokeWidth="2"
                                     strokeLinecap="round"
                                     strokeLinejoin="round"
-                                    style={{ transition: "stroke 0.2s ease-in-out" }}
+                                    style={{ transition: "stroke 0.2s ease-out" }}
                                 >
                                     <path d={tab.icon!} />
                                 </svg>
@@ -160,8 +157,8 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                                 style={{
                                     fontSize: "10px",
                                     fontWeight: isActive ? "700" : "500",
-                                    color,
-                                    transition: "all 0.2s ease-in-out",
+                                    color: textColor,
+                                    transition: "all 0.2s ease-out",
                                 }}
                             >
                                 {tab.label}
@@ -170,52 +167,6 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                     )
                 })}
             </div>
-
-            <button
-                onClick={onSearchOpen}
-                style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "4px",
-                    background: "#94E0FF",
-                    border: "none",
-                    borderRadius: "32px",
-                    cursor: "pointer",
-                    padding: "12px 16px",
-                    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
-                    minWidth: "70px",
-                    transition: "all 0.2s ease-in-out",
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.transform = "scale(1.05)" }}
-                onMouseLeave={(e) => { e.currentTarget.style.transform = "scale(1)" }}
-            >
-                <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke={searchOpen ? "#1A1A33" : "#6A6A6A"}
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    style={{ transition: "stroke 0.2s ease-in-out" }}
-                >
-                    <circle cx="11" cy="11" r="8" />
-                    <path d="m21 21-4.35-4.35" />
-                </svg>
-                <span
-                    style={{
-                        fontSize: "10px",
-                        fontWeight: "500",
-                        color: searchOpen ? "#1A1A33" : "#6A6A6A",
-                        transition: "color 0.2s ease-in-out",
-                    }}
-                >
-                    Search
-                </span>
-            </button>
         </div>
     )
 }

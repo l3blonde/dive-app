@@ -18,31 +18,33 @@ export function MapControls({
     onLocate,
 }: MapControlsProps) {
     const buttonStyle: React.CSSProperties = {
-        width: "44px",
-        height: "44px",
-        backgroundColor: "rgba(255, 255, 255, 0.12)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
+        width: "40px",
+        height: "40px",
+        backgroundColor: "rgba(6, 43, 61, 0.4)",
+        backdropFilter: "blur(16px)",
+        WebkitBackdropFilter: "blur(16px)",
         borderRadius: "12px",
-        border: "1px solid rgba(255, 255, 255, 0.2)",
-        boxShadow: "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 194, 215, 0.2)",
+        border: "1px solid rgba(0, 194, 215, 0.15)",
+        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
-        transition: "all 0.2s ease",
+        transition: "all 0.2s ease-out",
     }
 
     const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.currentTarget.style.backgroundColor = "rgba(255, 255, 255, 0.2)"
-        e.currentTarget.style.boxShadow = "0 4px 16px rgba(0, 0, 0, 0.2), 0 0 20px rgba(0, 194, 215, 0.4)"
+        e.currentTarget.style.backgroundColor = "rgba(6, 43, 61, 0.6)"
+        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.3)"
+        e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
     }
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>, isActive = false) => {
-        e.currentTarget.style.backgroundColor = isActive ? "rgba(0, 194, 215, 0.25)" : "rgba(255, 255, 255, 0.12)"
+        e.currentTarget.style.backgroundColor = isActive ? "rgba(0, 194, 215, 0.2)" : "rgba(6, 43, 61, 0.4)"
+        e.currentTarget.style.borderColor = isActive ? "rgba(0, 194, 215, 0.4)" : "rgba(0, 194, 215, 0.15)"
         e.currentTarget.style.boxShadow = isActive 
-            ? "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 194, 215, 0.5)"
-            : "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 194, 215, 0.2)"
+            ? "0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 194, 215, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
+            : "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
     }
 
     return (
@@ -109,18 +111,18 @@ export function MapControls({
                 onClick={onMarineSpeciesClick}
                 style={{
                     ...buttonStyle,
-                    backgroundColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.25)" : "rgba(255, 255, 255, 0.12)",
-                    borderColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.5)" : "rgba(255, 255, 255, 0.2)",
+                    backgroundColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.2)" : "rgba(6, 43, 61, 0.4)",
+                    borderColor: mapMode === "marine-species" ? "rgba(0, 194, 215, 0.4)" : "rgba(0, 194, 215, 0.15)",
                     boxShadow: mapMode === "marine-species" 
-                        ? "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 20px rgba(0, 194, 215, 0.5)"
-                        : "0 4px 16px rgba(0, 0, 0, 0.15), 0 0 12px rgba(0, 194, 215, 0.2)",
+                        ? "0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 194, 215, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
+                        : "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
                 }}
                 title={mapMode === "dive-sites" ? "View marine species" : "View dive sites"}
                 aria-label={mapMode === "dive-sites" ? "Marine species mode" : "Dive sites mode"}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={(e) => handleMouseLeave(e, mapMode === "marine-species")}
             >
-                <Fish size={20} color={mapMode === "marine-species" ? "#00C2D7" : "white"} strokeWidth={1.6} />
+                <Fish size={20} color={mapMode === "marine-species" ? "#00C2D7" : "rgba(255, 255, 255, 0.7)"} strokeWidth={1.6} />
             </button>
 
             {/* Waves / Layers */}

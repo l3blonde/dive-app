@@ -36,17 +36,17 @@ export function SearchBar({
                     display: "flex",
                     gap: "12px",
                     alignItems: "center",
-                    background: "rgba(255, 255, 255, 0.12)",
-                    backdropFilter: "blur(12px)",
-                    WebkitBackdropFilter: "blur(12px)",
-                    borderRadius: "28px",
-                    border: "1px solid rgba(255, 255, 255, 0.25)",
-                    padding: "14px 20px",
-                    boxShadow: "0 4px 24px rgba(0, 0, 0, 0.15), 0 0 16px rgba(0, 194, 215, 0.1)",
+                    background: "rgba(6, 43, 61, 0.4)",
+                    backdropFilter: "blur(16px)",
+                    WebkitBackdropFilter: "blur(16px)",
+                    borderRadius: "9999px",
+                    border: "1px solid rgba(0, 194, 215, 0.15)",
+                    padding: "12px 20px",
+                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
                 }}
             >
                 {/* Search Icon */}
-                <Search size={20} color="rgba(255, 255, 255, 0.7)" strokeWidth={1.8} />
+                <Search size={20} color="rgba(255, 255, 255, 0.6)" strokeWidth={1.8} />
 
                 {/* Input */}
                 <input
@@ -58,10 +58,13 @@ export function SearchBar({
                         flex: 1,
                         border: "none",
                         background: "transparent",
-                        color: "white",
+                        color: "rgba(255, 255, 255, 0.85)",
                         fontSize: "15px",
                         outline: "none",
                         fontFamily: "inherit",
+                    }}
+                    placeholderStyle={{
+                        color: "rgba(255, 255, 255, 0.4)"
                     }}
                 />
 

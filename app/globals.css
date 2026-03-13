@@ -3,13 +3,82 @@
 
 @custom-variant dark (&:is(.dark *));
 
-/* Ocean Color Palette */
+/* Ocean Color Palette - Premium Dive App */
 :root {
+    --ocean-abyss: #041C2C;
     --ocean-deep: #062B3D;
     --ocean-main: #083B53;
     --ocean-surface: #0C5A7A;
     --ocean-accent: #00C2D7;
+    --ocean-cyan: #0891B2;
+    --ocean-teal: #0A5A7A;
     --ocean-light: rgba(0, 194, 215, 0.3);
+}
+
+/* Subtle Glow Animation - Static for active states */
+@keyframes subtle-glow {
+    0%, 100% {
+        box-shadow: 0 0 24px rgba(0, 194, 215, 0.6), 0 0 48px rgba(0, 194, 215, 0.3), inset 0 0 16px rgba(0, 194, 215, 0.15);
+    }
+    50% {
+        box-shadow: 0 0 24px rgba(0, 194, 215, 0.6), 0 0 48px rgba(0, 194, 215, 0.3), inset 0 0 16px rgba(0, 194, 215, 0.15);
+    }
+}
+
+/* Slow Breathing Animation */
+@keyframes breathing {
+    0%, 100% {
+        opacity: 0.4;
+    }
+    50% {
+        opacity: 0.5;
+    }
+}
+
+/* Bubble Float Animation */
+@keyframes float-bubble {
+    0% {
+        transform: translateY(100vh) translateX(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 0.4;
+    }
+    90% {
+        opacity: 0.3;
+    }
+    100% {
+        transform: translateY(-100vh) translateX(20px);
+        opacity: 0;
+    }
+}
+
+/* Marker Pulse - Very Subtle */
+@keyframes marker-pulse {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(0, 194, 215, 0.6);
+    }
+    50% {
+        box-shadow: 0 0 28px rgba(0, 194, 215, 0.8);
+    }
+}
+
+/* Ocean Glass HUD Styling */
+.ocean-glass {
+    background: rgba(6, 43, 61, 0.4);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(0, 194, 215, 0.15);
+    box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.4),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+.bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.4), rgba(0, 194, 215, 0.15));
+    animation: float-bubble linear infinite;
 }
 
 :root {
