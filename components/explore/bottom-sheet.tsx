@@ -3,9 +3,9 @@
 import { useState } from "react"
 import { Bookmark, Star, SlidersHorizontal } from "lucide-react"
 import type { DiveSite } from "@/lib/types"
-import { DiveTripCard, type DiveTrip } from "@/components/dive-trip/dive-trip-card"
-import { SortDropdown, type SortOption } from "./sort-dropdown"
-import { FilterPanel, type FilterState } from "./filter-panel"
+import { DiveTripCard, type DiveTrip } from "@/components/trips/dive-trip-card"
+import { SortDropdown, type SortOption } from "@/components/search/sort-dropdown"
+import { FilterPanel, type FilterState } from "@/components/search/filter-panel"
 
 interface BottomSheetProps {
     diveSites: DiveSite[]

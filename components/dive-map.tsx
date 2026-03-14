@@ -17,7 +17,7 @@ import { MapMarker } from "./map/map-marker"
 import { getDifficultyIcon } from "@/lib/utils/dive-site"
 import { SpeciesPopup } from "./marine-species/species-popup"
 import { ProfilePage } from "./profile/profile-page"
-import { FilterPanel, type FilterState } from "./explore/filter-panel"
+import { FilterPanel, type FilterState } from "./search/filter-panel"
 
 type DiveSiteWithMarineLife = DiveSite & { marine_life?: string }
 
