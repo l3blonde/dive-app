@@ -20,12 +20,17 @@ export function MapControls({
     const buttonStyle: React.CSSProperties = {
         width: "40px",
         height: "40px",
-        backgroundColor: "rgba(6, 43, 61, 0.4)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
+        backgroundColor: "rgba(4, 24, 38, 0.55)",
+        backdropFilter: "blur(20px)",
+        WebkitBackdropFilter: "blur(20px)",
         borderRadius: "12px",
-        border: "1px solid rgba(0, 194, 215, 0.15)",
-        boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+        border: "1px solid rgba(0, 194, 215, 0.25)",
+        boxShadow: [
+            "0 4px 24px rgba(0, 0, 0, 0.5)",
+            "0 0 12px rgba(0, 194, 215, 0.18)",
+            "inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+            "inset 0 -1px 0 rgba(0, 0, 0, 0.25)",
+        ].join(", "),
         cursor: "pointer",
         display: "flex",
         alignItems: "center",
@@ -34,17 +39,29 @@ export function MapControls({
     }
 
     const handleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.currentTarget.style.backgroundColor = "rgba(6, 43, 61, 0.6)"
-        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.3)"
-        e.currentTarget.style.boxShadow = "0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
+        e.currentTarget.style.backgroundColor = "rgba(0, 194, 215, 0.15)"
+        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.5)"
+        e.currentTarget.style.boxShadow = [
+            "0 4px 24px rgba(0, 0, 0, 0.5)",
+            "0 0 20px rgba(0, 194, 215, 0.4)",
+            "inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+        ].join(", ")
     }
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>, isActive = false) => {
-        e.currentTarget.style.backgroundColor = isActive ? "rgba(0, 194, 215, 0.2)" : "rgba(6, 43, 61, 0.4)"
-        e.currentTarget.style.borderColor = isActive ? "rgba(0, 194, 215, 0.4)" : "rgba(0, 194, 215, 0.15)"
-        e.currentTarget.style.boxShadow = isActive 
-            ? "0 8px 32px rgba(0, 0, 0, 0.4), 0 0 20px rgba(0, 194, 215, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
-            : "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)"
+        e.currentTarget.style.backgroundColor = isActive ? "rgba(0, 194, 215, 0.2)" : "rgba(4, 24, 38, 0.55)"
+        e.currentTarget.style.borderColor = isActive ? "rgba(0, 194, 215, 0.5)" : "rgba(0, 194, 215, 0.25)"
+        e.currentTarget.style.boxShadow = isActive
+            ? [
+                "0 4px 24px rgba(0, 0, 0, 0.5)",
+                "0 0 20px rgba(0, 194, 215, 0.45)",
+                "inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+            ].join(", ")
+            : [
+                "0 4px 24px rgba(0, 0, 0, 0.5)",
+                "0 0 12px rgba(0, 194, 215, 0.18)",
+                "inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+            ].join(", ")
     }
 
     return (

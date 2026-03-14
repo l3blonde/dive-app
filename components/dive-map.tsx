@@ -598,26 +598,48 @@ export function DiveMap() {
                 <button
                     onClick={() => setIsBottomSheetOpen(!isBottomSheetOpen)}
                     style={{
-                        padding: "16px 32px",
-                        background: "#94E0FF",
-                        border: "none",
-                        borderRadius: "24px",
-                        fontSize: "16px",
-                        fontWeight: "700",
-                        color: "#1F2937",
+                        padding: "10px 24px",
+                        background: "rgba(4, 24, 38, 0.6)",
+                        backdropFilter: "blur(20px)",
+                        WebkitBackdropFilter: "blur(20px)",
+                        border: "1px solid rgba(0, 194, 215, 0.35)",
+                        borderRadius: "9999px",
+                        fontSize: "14px",
+                        fontWeight: "600",
+                        color: "#00C2D7",
                         cursor: "pointer",
-                        boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
-                        transition: "transform 0.2s",
+                        boxShadow: [
+                            "0 4px 24px rgba(0, 0, 0, 0.45)",
+                            "0 0 18px rgba(0, 194, 215, 0.25)",
+                            "inset 0 1px 0 rgba(255, 255, 255, 0.07)",
+                        ].join(", "),
+                        transition: "all 0.25s ease-out",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "8px",
+                        letterSpacing: "0.01em",
                     }}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.transform = "scale(1.02)"
+                        e.currentTarget.style.background = "rgba(0, 194, 215, 0.15)"
+                        e.currentTarget.style.boxShadow = [
+                            "0 4px 24px rgba(0, 0, 0, 0.45)",
+                            "0 0 28px rgba(0, 194, 215, 0.45)",
+                            "inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                        ].join(", ")
+                        e.currentTarget.style.transform = "translateY(-1px)"
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.transform = "scale(1)"
+                        e.currentTarget.style.background = "rgba(4, 24, 38, 0.6)"
+                        e.currentTarget.style.boxShadow = [
+                            "0 4px 24px rgba(0, 0, 0, 0.45)",
+                            "0 0 18px rgba(0, 194, 215, 0.25)",
+                            "inset 0 1px 0 rgba(255, 255, 255, 0.07)",
+                        ].join(", ")
+                        e.currentTarget.style.transform = "translateY(0)"
                     }}
                 >
                     <span>{filteredDiveSites.length} dive sites</span>
-                    <span style={{ fontSize: "12px" }}>{isBottomSheetOpen ? "▼" : "▲"}</span>
+                    <span style={{ fontSize: "10px", opacity: 0.7 }}>{isBottomSheetOpen ? "▼" : "▲"}</span>
                 </button>
             </div>
 

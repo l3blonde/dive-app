@@ -85,13 +85,18 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                 style={{
                     display: "flex",
                     width: "100%",
-                    background: "rgba(6, 43, 61, 0.55)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    border: "1px solid rgba(0, 194, 215, 0.18)",
+                    background: "rgba(4, 24, 38, 0.72)",
+                    backdropFilter: "blur(32px)",
+                    WebkitBackdropFilter: "blur(32px)",
+                    border: "1px solid rgba(0, 194, 215, 0.28)",
                     borderRadius: "32px",
                     padding: "8px 12px",
-                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0,194,215,0.06), inset 0 1px 0 rgba(255, 255, 255, 0.07)",
+                    boxShadow: [
+                        "0 8px 40px rgba(0, 0, 0, 0.6)",
+                        "0 0 0 1px rgba(0, 194, 215, 0.08)",
+                        "inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+                        "inset 0 -1px 0 rgba(0, 0, 0, 0.3)",
+                    ].join(", "),
                     justifyContent: "space-around",
                     alignItems: "center",
                     gap: "4px",
@@ -113,14 +118,20 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                                 alignItems: "center",
                                 justifyContent: "center",
                                 gap: "4px",
-                                background: isActive ? "rgba(0, 194, 215, 0.18)" : "transparent",
-                                border: isActive ? "1px solid rgba(0, 194, 215, 0.45)" : "1px solid transparent",
+                                background: isActive ? "rgba(0, 194, 215, 0.22)" : "transparent",
+                                border: isActive ? "1px solid rgba(0, 194, 215, 0.65)" : "1px solid transparent",
                                 cursor: "pointer",
                                 padding: "8px 4px",
                                 borderRadius: "9999px",
                                 transition: "all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
                                 boxShadow: isActive
-                                    ? "0 0 14px rgba(0, 194, 215, 0.45), 0 0 28px rgba(0, 194, 215, 0.2), inset 0 0 10px rgba(0, 194, 215, 0.08)"
+                                    ? [
+                                        "0 0 12px rgba(0, 194, 215, 0.7)",
+                                        "0 0 28px rgba(0, 194, 215, 0.45)",
+                                        "0 0 52px rgba(0, 194, 215, 0.2)",
+                                        "inset 0 0 14px rgba(0, 194, 215, 0.18)",
+                                        "inset 0 1px 0 rgba(255, 255, 255, 0.12)",
+                                    ].join(", ")
                                     : "none",
                             }}
                             onMouseEnter={(e) => {
