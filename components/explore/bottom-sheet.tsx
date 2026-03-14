@@ -4,7 +4,10 @@ import { useState } from "react"
 import { Bookmark, Star, SlidersHorizontal, X, Fish, MapPin, Anchor, ChevronDown } from "lucide-react"
 import type { DiveSite, MarineSpecies } from "@/lib/types"
 import { DiveTripCard, type DiveTrip } from "@/components/trips/dive-trip-card"
+import { DiveSiteCard } from "@/components/cards/dive-site-card"
+import { MarineSpeciesCard } from "@/components/cards/marine-species-card"
 import { MARINE_SPECIES_LIST } from "@/lib/data/marine-species"
+import { MOCK_DIVE_TRIPS } from "@/lib/data/dive-trips"
 
 export type SortOption = "distance" | "rating" | "newest" | "difficulty"
 
@@ -321,13 +324,13 @@ export function BottomSheet({
             }} className="hide-scrollbar">
 
                 {/* Filter button */}
-                <button onClick={() => { setShowFilter(!showFilter); setShowSort(false) }} style={filterBtnStyle}>
+                <button onClick={() => setShowFilter(!showFilter)} style={filterBtnStyle}>
                     <SlidersHorizontal size={18} color="#00C2D7" strokeWidth={1.8} />
                 </button>
 
                 {/* Sort chip */}
                 <button
-                    onClick={() => { setShowSort(!showSort); setShowFilter(false) }}
+                    onClick={() => setShowSort(!showSort)}
                     style={{
                         ...chipStyle(showSort),
                         display: "flex", alignItems: "center", gap: "4px",
@@ -455,13 +458,65 @@ export function BottomSheet({
             <div style={{ flex: 1, overflowY: "auto", padding: "8px 12px", display: "flex", flexDirection: "column", gap: "12px" }}
                 className="hide-scrollbar">
 
-                {/* Dive Sites */}
-                {activeContentType === "Dive Sites" && filteredSites.map((site) => (
-                    <DiveSiteCard key={site.id} site={site} onViewDetails={onViewDetails} onAddToPlan={onAddToPlan} />
-                ))}
-                {activeContentType === "Dive Sites" && filteredSites.length === 0 && (
-                    <EmptyState icon={<MapPin size={32} color="rgba(0,194,215,0.4)" />} label="No dive sites match your filters" />
-                )}
+                    {/* Dive Sites */}
+                    {activeContentType === "Dive Sites" && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px", overflow: "auto", flex: 1 }}>
+                            {filteredSites.length > 0 ? (
+                                filteredSites.map((site) => (
+                                    <DiveSiteCard
+                                        key={site.id}
+                                        site={site}
+                                        onViewDetails={onViewDetails}
+                                        onAddToPlan={onAddToPlan}
+                                    />
+                                ))
+                            ) : (
+                                <div style={{ padding: "40px 20px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>
+                                    No dive sites found
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Dive Trips */}
+                    {activeContentType === "Dive Trips" && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px", overflow: "auto", flex: 1 }}>
+                            {filteredTrips.length > 0 ? (
+                                filteredTrips.map((trip) => (
+                                    <DiveTripCard
+                                        key={trip.id}
+                                        trip={trip}
+                                        onViewDetails={onViewTripDetails}
+                                        onAddToPlan={onAddTripToPlan}
+                                    />
+                                ))
+                            ) : (
+                                <div style={{ padding: "40px 20px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>
+                                    No dive trips found
+                                </div>
+                            )}
+                        </div>
+                    )}
+
+                    {/* Marine Life */}
+                    {activeContentType === "Marine Life" && (
+                        <div style={{ display: "flex", flexDirection: "column", gap: "12px", overflow: "auto", flex: 1 }}>
+                            {filteredSpecies.length > 0 ? (
+                                filteredSpecies.map((species) => (
+                                    <MarineSpeciesCard
+                                        key={species.id}
+                                        species={species}
+                                        onViewProfile={() => console.log("View profile:", species.common_name)}
+                                        onAddSighting={() => console.log("Add sighting:", species.common_name)}
+                                    />
+                                ))
+                            ) : (
+                                <div style={{ padding: "40px 20px", textAlign: "center", color: "rgba(255,255,255,0.5)" }}>
+                                    No marine species found
+                                </div>
+                            )}
+                        </div>
+                    )}
 
                 {/* Dive Trips */}
                 {activeContentType === "Dive Trips" && filteredTrips.map((trip) => (
