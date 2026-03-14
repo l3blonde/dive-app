@@ -11,7 +11,6 @@ export interface DiveTrip {
     end_date: string
     description?: string
     marine_life?: string // JSON array
-    price_usd?: number
     spots_total?: number
     spots_left?: number
     image_url?: string
@@ -109,19 +108,6 @@ export function DiveTripCard({ trip, onAddToPlan, onViewDetails }: DiveTripCardP
                             [{trip.type}]
                         </span>
                     </div>
-                    {trip.price_usd && (
-                        <span
-                            style={{
-                                fontSize: "14px",
-                                fontWeight: "700",
-                                color: "#FFFFFF",
-                                textShadow: "0 0 8px rgba(0, 194, 215, 0.5)",
-                                whiteSpace: "nowrap",
-                            }}
-                        >
-                            ${trip.price_usd.toLocaleString()} USD
-                        </span>
-                    )}
                 </div>
 
                 {/* Date */}

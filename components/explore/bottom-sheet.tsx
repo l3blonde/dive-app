@@ -20,6 +20,7 @@ interface BottomSheetProps {
 type ContentType = "Dive Sites" | "Dive Trips" | "Marine Life"
 
 const CONTENT_CHIPS: ContentType[] = ["Dive Sites", "Dive Trips", "Marine Life"]
+const FILTER_CHIPS = ["Nearby"]
 
 // Mock dive trips for now (until Supabase is connected)
 const MOCK_DIVE_TRIPS: DiveTrip[] = [
@@ -32,10 +33,9 @@ const MOCK_DIVE_TRIPS: DiveTrip[] = [
         end_date: "2026-04-11",
         description: "Relaxed island vibe + chance to see whale sharks, manta rays, and reef sharks.",
         marine_life: '["whale-shark","manta-ray","reef-shark"]',
-        price_usd: 1450,
         spots_total: 12,
         spots_left: 8,
-        image_url: "/images/trips/dhigurah.jpg",
+        image_url: "https://xu5qaaigiohvkyk8.public.blob.vercel-storage.com/site-placeholder.png",
         location: "Dhigurah, Maldives",
         rating: 4.9,
         review_count: 214,
@@ -49,10 +49,9 @@ const MOCK_DIVE_TRIPS: DiveTrip[] = [
         end_date: "2026-04-22",
         description: "Remote reefs + chance to see whale sharks, manta rays, and tiger sharks.",
         marine_life: '["whale-shark","manta-ray","tiger-shark"]',
-        price_usd: 2290,
         spots_total: 16,
         spots_left: 6,
-        image_url: "/images/trips/liveaboard.jpg",
+        image_url: "https://xu5qaaigiohvkyk8.public.blob.vercel-storage.com/Black-Coral.png",
         location: "Male Atoll, Maldives",
         rating: 4.8,
         review_count: 156,
@@ -66,10 +65,9 @@ const MOCK_DIVE_TRIPS: DiveTrip[] = [
         end_date: "2026-05-24",
         description: "The most biodiverse marine region on Earth. Over 1,500 fish species.",
         marine_life: '["manta-ray","wobbegong-shark","pygmy-seahorse"]',
-        price_usd: 3450,
         spots_total: 14,
         spots_left: 6,
-        image_url: "/images/trips/raja-ampat.jpg",
+        image_url: "https://xu5qaaigiohvkyk8.public.blob.vercel-storage.com/site-placeholder.png",
         location: "Raja Ampat, Indonesia",
         rating: 5.0,
         review_count: 287,
@@ -138,18 +136,22 @@ export function BottomSheet({
     }
 
     const chipStyle = (isActive: boolean): React.CSSProperties => ({
-        padding: "8px 14px",
+        padding: "8px 16px",
         borderRadius: "9999px",
-        border: isActive ? "1.5px solid rgba(0, 194, 215, 0.6)" : "1px solid rgba(255, 255, 255, 0.15)",
-        background: isActive ? "rgba(0, 194, 215, 0.2)" : "rgba(255, 255, 255, 0.05)",
+        border: isActive ? "1.5px solid rgba(0, 194, 215, 0.65)" : "1px solid rgba(255, 255, 255, 0.15)",
+        background: isActive 
+            ? "radial-gradient(ellipse 100% 100% at 50% 0%, rgba(0,194,215,0.25) 0%, rgba(0,194,215,0.12) 100%)"
+            : "rgba(255, 255, 255, 0.05)",
         color: isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.7)",
         fontSize: "12px",
         fontWeight: isActive ? "600" : "500",
         cursor: "pointer",
         whiteSpace: "nowrap",
-        transition: "all 0.2s ease-out",
+        transition: "all 0.25s ease-out",
         flexShrink: 0,
-        boxShadow: isActive ? "0 0 12px rgba(0, 194, 215, 0.3)" : "none",
+        boxShadow: isActive 
+            ? "0 0 10px rgba(0, 194, 215, 0.6), 0 0 20px rgba(0, 194, 215, 0.3), inset 0 1px 0 rgba(255,255,255,0.1)"
+            : "none",
     })
 
     return (
@@ -162,19 +164,22 @@ export function BottomSheet({
                     right: 0,
                     maxHeight: getHeight(),
                     height: getHeight(),
-                    background: "radial-gradient(ellipse 100% 50% at 50% 0%, rgba(0,194,215,0.08) 0%, rgba(4,24,38,0.85) 50%, rgba(4,24,38,0.92) 100%)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
+                    background: "radial-gradient(ellipse 100% 60% at 50% -10%, rgba(0,194,215,0.15) 0%, rgba(6,43,61,0.8) 40%, rgba(4,24,38,0.95) 100%)",
+                    backdropFilter: "blur(24px)",
+                    WebkitBackdropFilter: "blur(24px)",
                     borderRadius: "28px 28px 0 0",
-                    border: "1.5px solid rgba(0, 194, 215, 0.35)",
+                    border: "2px solid rgba(0, 194, 215, 0.55)",
                     borderBottom: "none",
                     zIndex: 997,
                     display: "flex",
                     flexDirection: "column",
                     boxShadow: [
-                        "0 0 20px rgba(0, 194, 215, 0.3)",
-                        "0 -8px 40px rgba(0, 0, 0, 0.5)",
-                        "inset 0 1px 0 rgba(255, 255, 255, 0.08)",
+                        "0 0 16px rgba(0, 194, 215, 0.6)",
+                        "0 0 32px rgba(0, 194, 215, 0.3)",
+                        "0 0 48px rgba(0, 194, 215, 0.15)",
+                        "0 -8px 40px rgba(0, 0, 0, 0.6)",
+                        "inset 0 2px 8px rgba(255, 255, 255, 0.1)",
+                        "inset 0 -1px 0 rgba(0, 0, 0, 0.3)",
                     ].join(", "),
                     transition: "max-height 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
                     overflow: "hidden",
@@ -195,8 +200,11 @@ export function BottomSheet({
                         style={{
                             width: "48px",
                             height: "4px",
-                            background: "rgba(0, 194, 215, 0.5)",
+                            background: "rgba(0, 194, 215, 0.7)",
                             borderRadius: "2px",
+                            boxShadow: "0 0 12px rgba(0, 194, 215, 0.6), inset 0 1px 0 rgba(255,255,255,0.2)",
+                        }}
+                    />
                             boxShadow: "0 0 8px rgba(0, 194, 215, 0.4)",
                         }}
                     />
@@ -220,29 +228,44 @@ export function BottomSheet({
                     <button
                         onClick={() => setIsFilterOpen(true)}
                         style={{
-                            width: "38px",
-                            height: "38px",
+                            width: "40px",
+                            height: "40px",
                             borderRadius: "50%",
-                            border: "1px solid rgba(0, 194, 215, 0.4)",
-                            background: "rgba(0, 194, 215, 0.15)",
+                            border: "1.5px solid rgba(0, 194, 215, 0.6)",
+                            background: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.3), rgba(0,194,215,0.2) 30%, rgba(4,24,38,0.65))",
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             cursor: "pointer",
                             flexShrink: 0,
-                            boxShadow: "0 0 10px rgba(0, 194, 215, 0.25)",
+                            boxShadow: [
+                                "0 0 12px rgba(0, 194, 215, 0.8)",
+                                "0 0 28px rgba(0, 194, 215, 0.4)",
+                                "inset 0 0 12px rgba(0, 194, 215, 0.2)",
+                                "inset 2px 2px 6px rgba(255, 255, 255, 0.2)",
+                            ].join(", "),
                             transition: "all 0.2s ease-out",
                         }}
                         onMouseEnter={(e) => {
-                            e.currentTarget.style.background = "rgba(0, 194, 215, 0.25)"
-                            e.currentTarget.style.boxShadow = "0 0 16px rgba(0, 194, 215, 0.4)"
+                            e.currentTarget.style.background = "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.35), rgba(0,194,215,0.3) 30%, rgba(4,24,38,0.65))"
+                            e.currentTarget.style.boxShadow = [
+                                "0 0 18px rgba(0, 194, 215, 1)",
+                                "0 0 40px rgba(0, 194, 215, 0.6)",
+                                "inset 0 0 16px rgba(0, 194, 215, 0.3)",
+                                "inset 2px 2px 8px rgba(255, 255, 255, 0.25)",
+                            ].join(", ")
                         }}
                         onMouseLeave={(e) => {
-                            e.currentTarget.style.background = "rgba(0, 194, 215, 0.15)"
-                            e.currentTarget.style.boxShadow = "0 0 10px rgba(0, 194, 215, 0.25)"
+                            e.currentTarget.style.background = "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.3), rgba(0,194,215,0.2) 30%, rgba(4,24,38,0.65))"
+                            e.currentTarget.style.boxShadow = [
+                                "0 0 12px rgba(0, 194, 215, 0.8)",
+                                "0 0 28px rgba(0, 194, 215, 0.4)",
+                                "inset 0 0 12px rgba(0, 194, 215, 0.2)",
+                                "inset 2px 2px 6px rgba(255, 255, 255, 0.2)",
+                            ].join(", ")
                         }}
                     >
-                        <SlidersHorizontal size={16} color="#00C2D7" />
+                        <SlidersHorizontal size={18} color="#00C2D7" strokeWidth={1.8} />
                     </button>
 
                     {/* Sort Dropdown */}
