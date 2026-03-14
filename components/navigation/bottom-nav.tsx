@@ -85,17 +85,18 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                 style={{
                     display: "flex",
                     width: "100%",
-                    background: "rgba(4, 24, 38, 0.72)",
+                    background: "radial-gradient(ellipse 100% 150% at 50% 100%, rgba(0,194,215,0.08) 0%, rgba(4,24,38,0.75) 50%, rgba(4,24,38,0.85) 100%)",
                     backdropFilter: "blur(32px)",
                     WebkitBackdropFilter: "blur(32px)",
-                    border: "1px solid rgba(0, 194, 215, 0.28)",
+                    border: "1.5px solid rgba(0, 194, 215, 0.45)",
                     borderRadius: "32px",
                     padding: "8px 12px",
                     boxShadow: [
+                        "0 0 16px rgba(0, 194, 215, 0.5)",
+                        "0 0 40px rgba(0, 194, 215, 0.25)",
                         "0 8px 40px rgba(0, 0, 0, 0.6)",
-                        "0 0 0 1px rgba(0, 194, 215, 0.08)",
-                        "inset 0 1px 0 rgba(255, 255, 255, 0.08)",
-                        "inset 0 -1px 0 rgba(0, 0, 0, 0.3)",
+                        "inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                        "inset 0 -1px 0 rgba(0, 0, 0, 0.35)",
                     ].join(", "),
                     justifyContent: "space-around",
                     alignItems: "center",
@@ -118,19 +119,22 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
                                 alignItems: "center",
                                 justifyContent: "center",
                                 gap: "4px",
-                                background: isActive ? "rgba(0, 194, 215, 0.22)" : "transparent",
-                                border: isActive ? "1px solid rgba(0, 194, 215, 0.65)" : "1px solid transparent",
+                                background: isActive 
+                                    ? "radial-gradient(ellipse 100% 100% at 50% 0%, rgba(0,194,215,0.35) 0%, rgba(0,194,215,0.18) 50%, rgba(0,194,215,0.1) 100%)"
+                                    : "transparent",
+                                border: isActive ? "1.5px solid rgba(0, 194, 215, 0.8)" : "1px solid transparent",
                                 cursor: "pointer",
                                 padding: "8px 4px",
                                 borderRadius: "9999px",
                                 transition: "all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
                                 boxShadow: isActive
                                     ? [
-                                        "0 0 12px rgba(0, 194, 215, 0.7)",
-                                        "0 0 28px rgba(0, 194, 215, 0.45)",
-                                        "0 0 52px rgba(0, 194, 215, 0.2)",
-                                        "inset 0 0 14px rgba(0, 194, 215, 0.18)",
-                                        "inset 0 1px 0 rgba(255, 255, 255, 0.12)",
+                                        "0 0 10px rgba(0, 194, 215, 0.9)",
+                                        "0 0 24px rgba(0, 194, 215, 0.7)",
+                                        "0 0 48px rgba(0, 194, 215, 0.4)",
+                                        "0 0 72px rgba(0, 194, 215, 0.2)",
+                                        "inset 0 0 16px rgba(0, 194, 215, 0.3)",
+                                        "inset 0 2px 4px rgba(255, 255, 255, 0.15)",
                                     ].join(", ")
                                     : "none",
                             }}

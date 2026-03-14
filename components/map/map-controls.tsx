@@ -21,21 +21,22 @@ export function MapControls({
     onSearchToggle,
     searchOpen = false,
 }: MapControlsProps) {
-    // 3D Bubble Button Style - Creates sphere effect with radial gradient and layered glows
+    // 3D Bubble Button Style - Creates sphere effect with radial gradient and strong neon glows
     const bubbleButtonStyle: React.CSSProperties = {
         width: "48px",
         height: "48px",
         backgroundColor: "rgba(0, 194, 215, 0.12)",
-        backgroundImage: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.3), rgba(0,194,215,0.15) 30%, rgba(4,24,38,0.6))",
+        backgroundImage: "radial-gradient(circle at 30% 25%, rgba(255,255,255,0.35), rgba(0,194,215,0.22) 35%, rgba(4,24,38,0.65))",
         backdropFilter: "blur(12px)",
         WebkitBackdropFilter: "blur(12px)",
         borderRadius: "50%",
-        border: "1.5px solid rgba(0, 194, 215, 0.4)",
+        border: "1.5px solid rgba(0, 194, 215, 0.55)",
         boxShadow: [
-            "0 0 20px rgba(0, 194, 215, 0.6)",      // Tight core glow
-            "0 0 40px rgba(0, 194, 215, 0.3)",      // Mid bloom
-            "inset 0 0 12px rgba(0, 194, 215, 0.25)", // Inner glow
-            "inset 2px 2px 6px rgba(255, 255, 255, 0.2)", // Top-left highlight (3D effect)
+            "0 0 12px rgba(0, 194, 215, 0.8)",
+            "0 0 28px rgba(0, 194, 215, 0.5)",
+            "0 0 48px rgba(0, 194, 215, 0.25)",
+            "inset 0 0 14px rgba(0, 194, 215, 0.3)",
+            "inset 2px 2px 8px rgba(255, 255, 255, 0.25)",
         ].join(", "),
         cursor: "pointer",
         display: "flex",
@@ -45,29 +46,32 @@ export function MapControls({
     }
 
     const handleBubbleMouseEnter = (e: React.MouseEvent<HTMLButtonElement>) => {
-        e.currentTarget.style.backgroundColor = "rgba(0, 194, 215, 0.22)"
+        e.currentTarget.style.backgroundColor = "rgba(0, 194, 215, 0.25)"
         e.currentTarget.style.boxShadow = [
-            "0 0 28px rgba(0, 194, 215, 0.8)",
-            "0 0 56px rgba(0, 194, 215, 0.45)",
-            "inset 0 0 16px rgba(0, 194, 215, 0.35)",
-            "inset 2px 2px 8px rgba(255, 255, 255, 0.25)",
+            "0 0 18px rgba(0, 194, 215, 1)",
+            "0 0 40px rgba(0, 194, 215, 0.7)",
+            "0 0 64px rgba(0, 194, 215, 0.35)",
+            "inset 0 0 18px rgba(0, 194, 215, 0.4)",
+            "inset 2px 2px 10px rgba(255, 255, 255, 0.3)",
         ].join(", ")
     }
 
     const handleBubbleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>, isActive = false) => {
-        const baseColor = isActive ? "rgba(0, 194, 215, 0.18)" : "rgba(0, 194, 215, 0.12)"
+        const baseColor = isActive ? "rgba(0, 194, 215, 0.2)" : "rgba(0, 194, 215, 0.12)"
         const glow = isActive 
             ? [
-                "0 0 28px rgba(0, 194, 215, 0.7)",
-                "0 0 48px rgba(0, 194, 215, 0.35)",
-                "inset 0 0 14px rgba(0, 194, 215, 0.3)",
-                "inset 2px 2px 6px rgba(255, 255, 255, 0.2)",
+                "0 0 16px rgba(0, 194, 215, 0.9)",
+                "0 0 36px rgba(0, 194, 215, 0.55)",
+                "0 0 56px rgba(0, 194, 215, 0.3)",
+                "inset 0 0 16px rgba(0, 194, 215, 0.35)",
+                "inset 2px 2px 8px rgba(255, 255, 255, 0.25)",
             ].join(", ")
             : [
-                "0 0 20px rgba(0, 194, 215, 0.6)",
-                "0 0 40px rgba(0, 194, 215, 0.3)",
-                "inset 0 0 12px rgba(0, 194, 215, 0.25)",
-                "inset 2px 2px 6px rgba(255, 255, 255, 0.2)",
+                "0 0 12px rgba(0, 194, 215, 0.8)",
+                "0 0 28px rgba(0, 194, 215, 0.5)",
+                "0 0 48px rgba(0, 194, 215, 0.25)",
+                "inset 0 0 14px rgba(0, 194, 215, 0.3)",
+                "inset 2px 2px 8px rgba(255, 255, 255, 0.25)",
             ].join(", ")
         e.currentTarget.style.backgroundColor = baseColor
         e.currentTarget.style.boxShadow = glow

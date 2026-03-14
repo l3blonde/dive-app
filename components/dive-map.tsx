@@ -600,48 +600,57 @@ export function DiveMap() {
                 <button
                     onClick={() => setIsBottomSheetOpen(!isBottomSheetOpen)}
                     style={{
-                        padding: "10px 24px",
-                        background: "rgba(4, 24, 38, 0.6)",
+                        padding: "12px 28px",
+                        background: "radial-gradient(ellipse 100% 100% at 50% 0%, rgba(0,194,215,0.2) 0%, rgba(4,24,38,0.65) 60%, rgba(4,24,38,0.75) 100%)",
                         backdropFilter: "blur(20px)",
                         WebkitBackdropFilter: "blur(20px)",
-                        border: "1px solid rgba(0, 194, 215, 0.35)",
+                        border: "1.5px solid rgba(0, 194, 215, 0.6)",
                         borderRadius: "9999px",
-                        fontSize: "14px",
+                        fontSize: "15px",
                         fontWeight: "600",
                         color: "#00C2D7",
                         cursor: "pointer",
                         boxShadow: [
+                            "0 0 12px rgba(0, 194, 215, 0.7)",
+                            "0 0 28px rgba(0, 194, 215, 0.45)",
+                            "0 0 48px rgba(0, 194, 215, 0.2)",
                             "0 4px 24px rgba(0, 0, 0, 0.45)",
-                            "0 0 18px rgba(0, 194, 215, 0.25)",
-                            "inset 0 1px 0 rgba(255, 255, 255, 0.07)",
+                            "inset 0 2px 4px rgba(255, 255, 255, 0.12)",
                         ].join(", "),
                         transition: "all 0.25s ease-out",
                         display: "flex",
                         alignItems: "center",
                         gap: "8px",
                         letterSpacing: "0.01em",
+                        textShadow: "0 0 8px rgba(0, 194, 215, 0.5)",
                     }}
                     onMouseEnter={(e) => {
-                        e.currentTarget.style.background = "rgba(0, 194, 215, 0.15)"
+                        e.currentTarget.style.background = "radial-gradient(ellipse 100% 100% at 50% 0%, rgba(0,194,215,0.3) 0%, rgba(4,24,38,0.65) 60%, rgba(4,24,38,0.75) 100%)"
                         e.currentTarget.style.boxShadow = [
+                            "0 0 18px rgba(0, 194, 215, 0.9)",
+                            "0 0 40px rgba(0, 194, 215, 0.6)",
+                            "0 0 64px rgba(0, 194, 215, 0.3)",
                             "0 4px 24px rgba(0, 0, 0, 0.45)",
-                            "0 0 28px rgba(0, 194, 215, 0.45)",
-                            "inset 0 1px 0 rgba(255, 255, 255, 0.1)",
+                            "inset 0 2px 4px rgba(255, 255, 255, 0.15)",
                         ].join(", ")
-                        e.currentTarget.style.transform = "translateY(-1px)"
+                        e.currentTarget.style.transform = "translateY(-2px)"
+                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.8)"
                     }}
                     onMouseLeave={(e) => {
-                        e.currentTarget.style.background = "rgba(4, 24, 38, 0.6)"
+                        e.currentTarget.style.background = "radial-gradient(ellipse 100% 100% at 50% 0%, rgba(0,194,215,0.2) 0%, rgba(4,24,38,0.65) 60%, rgba(4,24,38,0.75) 100%)"
                         e.currentTarget.style.boxShadow = [
+                            "0 0 12px rgba(0, 194, 215, 0.7)",
+                            "0 0 28px rgba(0, 194, 215, 0.45)",
+                            "0 0 48px rgba(0, 194, 215, 0.2)",
                             "0 4px 24px rgba(0, 0, 0, 0.45)",
-                            "0 0 18px rgba(0, 194, 215, 0.25)",
-                            "inset 0 1px 0 rgba(255, 255, 255, 0.07)",
+                            "inset 0 2px 4px rgba(255, 255, 255, 0.12)",
                         ].join(", ")
                         e.currentTarget.style.transform = "translateY(0)"
+                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.6)"
                     }}
                 >
                     <span>{filteredDiveSites.length} dive sites</span>
-                    <span style={{ fontSize: "10px", opacity: 0.7 }}>{isBottomSheetOpen ? "▼" : "▲"}</span>
+                    <span style={{ fontSize: "11px", color: "rgba(0, 194, 215, 0.7)" }}>{isBottomSheetOpen ? "▼" : "▲"}</span>
                 </button>
             </div>
 

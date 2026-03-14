@@ -35,7 +35,7 @@ export function SearchBar({
                     pointerEvents: "none",
                 }}
             >
-                {/* 3D Bubble Glass Search Bar */}
+                {/* 3D Bubble Glass Search Bar - Neon Aqua Glow */}
                 <div
                     style={{
                         width: "100%",
@@ -45,39 +45,42 @@ export function SearchBar({
                         gap: "10px",
                         padding: "14px 18px",
                         borderRadius: "9999px",
-                        background: "radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.22) 0%, rgba(0,194,215,0.12) 25%, rgba(6,43,61,0.55) 60%, rgba(4,28,44,0.7) 100%)",
-                        backdropFilter: "blur(16px)",
-                        WebkitBackdropFilter: "blur(16px)",
-                        border: "1.5px solid rgba(0, 194, 215, 0.35)",
+                        background: "radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.28) 0%, rgba(0,194,215,0.18) 25%, rgba(6,43,61,0.55) 60%, rgba(4,28,44,0.75) 100%)",
+                        backdropFilter: "blur(20px)",
+                        WebkitBackdropFilter: "blur(20px)",
+                        border: "1.5px solid rgba(0, 194, 215, 0.55)",
                         boxShadow: [
-                            "0 0 20px rgba(0, 194, 215, 0.4)",
-                            "0 0 40px rgba(0, 194, 215, 0.2)",
+                            "0 0 12px rgba(0, 194, 215, 0.7)",
+                            "0 0 28px rgba(0, 194, 215, 0.45)",
+                            "0 0 48px rgba(0, 194, 215, 0.2)",
                             "0 8px 32px rgba(0, 0, 0, 0.5)",
-                            "inset 0 2px 4px rgba(255, 255, 255, 0.15)",
-                            "inset 0 -1px 2px rgba(0, 0, 0, 0.2)",
+                            "inset 0 2px 6px rgba(255, 255, 255, 0.2)",
+                            "inset 0 -1px 2px rgba(0, 0, 0, 0.25)",
                         ].join(", "),
                         pointerEvents: "auto",
                         transition: "all 0.3s ease-out",
                     }}
                     onMouseEnter={(e) => {
                         e.currentTarget.style.boxShadow = [
-                            "0 0 28px rgba(0, 194, 215, 0.55)",
-                            "0 0 56px rgba(0, 194, 215, 0.3)",
+                            "0 0 18px rgba(0, 194, 215, 0.9)",
+                            "0 0 40px rgba(0, 194, 215, 0.6)",
+                            "0 0 64px rgba(0, 194, 215, 0.3)",
                             "0 8px 32px rgba(0, 0, 0, 0.5)",
-                            "inset 0 2px 4px rgba(255, 255, 255, 0.18)",
-                            "inset 0 -1px 2px rgba(0, 0, 0, 0.2)",
+                            "inset 0 2px 6px rgba(255, 255, 255, 0.25)",
+                            "inset 0 -1px 2px rgba(0, 0, 0, 0.25)",
                         ].join(", ")
-                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.5)"
+                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.75)"
                     }}
                     onMouseLeave={(e) => {
                         e.currentTarget.style.boxShadow = [
-                            "0 0 20px rgba(0, 194, 215, 0.4)",
-                            "0 0 40px rgba(0, 194, 215, 0.2)",
+                            "0 0 12px rgba(0, 194, 215, 0.7)",
+                            "0 0 28px rgba(0, 194, 215, 0.45)",
+                            "0 0 48px rgba(0, 194, 215, 0.2)",
                             "0 8px 32px rgba(0, 0, 0, 0.5)",
-                            "inset 0 2px 4px rgba(255, 255, 255, 0.15)",
-                            "inset 0 -1px 2px rgba(0, 0, 0, 0.2)",
+                            "inset 0 2px 6px rgba(255, 255, 255, 0.2)",
+                            "inset 0 -1px 2px rgba(0, 0, 0, 0.25)",
                         ].join(", ")
-                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.35)"
+                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.55)"
                     }}
                 >
                         {/* Search icon */}
