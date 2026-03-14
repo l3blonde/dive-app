@@ -17,8 +17,7 @@ import { MapMarker } from "./map/map-marker"
 import { getDifficultyIcon } from "@/lib/utils/dive-site"
 import { SpeciesPopup } from "./marine-species/species-popup"
 import { ProfilePage } from "./profile/profile-page"
-import { FilterPanel, type FilterState } from "./search/filter-panel"
-import type { SortOption } from "./search/sort-dropdown"
+import type { SortOption } from "./explore/bottom-sheet"
 
 type DiveSiteWithMarineLife = DiveSite & { marine_life?: string }
 
@@ -36,15 +35,7 @@ export function DiveMap() {
     const [searchQuery, setSearchQuery] = useState("")
     const [filters, setFilters] = useState<Record<string, any>>({})
     const [showFilters, setShowFilters] = useState(false)
-    const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
-    const [advancedFilters, setAdvancedFilters] = useState<FilterState>({
-        depthRange: [0, 60],
-        difficulty: [],
-        distanceRadius: 100,
-        tripType: [],
-        priceRange: [0, 5000],
-    })
-    // New state for bottom sheet content control
+    // Content control state
     const [activeContentType, setActiveContentType] = useState<"Dive Sites" | "Dive Trips" | "Marine Life">("Dive Sites")
     const [isNearbyActive, setIsNearbyActive] = useState(false)
     const [sortOption, setSortOption] = useState<SortOption>("rating")
@@ -448,10 +439,7 @@ export function DiveMap() {
             <SearchBar
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
-                onToggleFilters={() => {
-                    setIsBottomSheetOpen(true)
-                    setIsFilterPanelOpen(true)
-                }}
+                onToggleFilters={() => setIsBottomSheetOpen(true)}
             />
 
             {isSpeciesBrowserOpen && (
@@ -698,7 +686,6 @@ export function DiveMap() {
                     onNearbyChange={setIsNearbyActive}
                     sortOption={sortOption}
                     onSortChange={setSortOption}
-                    onFilterClick={() => setIsFilterPanelOpen(true)}
                 />
             )}
 
@@ -742,14 +729,6 @@ export function DiveMap() {
                     }
                 />
             )}
-
-            {/* Filter Panel - shared between search bar and bottom sheet */}
-            <FilterPanel
-                isOpen={isFilterPanelOpen}
-                onClose={() => setIsFilterPanelOpen(false)}
-                filters={advancedFilters}
-                onApply={setAdvancedFilters}
-            />
 
             <BottomNav
                 activeTab={activeTab}
