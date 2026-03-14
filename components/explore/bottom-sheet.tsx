@@ -11,7 +11,7 @@ interface BottomSheetProps {
     onAddToPlan?: (site: DiveSite) => void
 }
 
-const FILTER_CHIPS = ["Sort", "Nearby", "Dive Sites", "Dive Trips", "Marine Life"]
+const FILTER_CHIPS = ["Filter", "Nearby", "Dive Sites", "Dive Trips", "Marine Life"]
 
 export function BottomSheet({ diveSites, onClose, onViewDetails, onAddToPlan }: BottomSheetProps) {
     const [selectedFilters, setSelectedFilters] = useState<string[]>(["Nearby"])
@@ -19,14 +19,12 @@ export function BottomSheet({ diveSites, onClose, onViewDetails, onAddToPlan }: 
     const [sheetHeight, setSheetHeight] = useState<"collapsed" | "half" | "full">("half")
 
     const toggleFilter = (chip: string) => {
-        if (chip === "Sort") {
-            // Sort is single-select only
-            setSelectedFilters(["Sort"])
+        if (chip === "Filter") {
+            setSelectedFilters(["Filter"])
         } else if (selectedFilters.includes(chip)) {
             setSelectedFilters(selectedFilters.filter((f) => f !== chip))
         } else {
-            // Remove Sort if selecting other filters
-            const filtered = selectedFilters.filter((f) => f !== "Sort")
+            const filtered = selectedFilters.filter((f) => f !== "Filter")
             setSelectedFilters([...filtered, chip])
         }
     }

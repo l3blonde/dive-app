@@ -23,7 +23,7 @@ type DiveSiteWithMarineLife = DiveSite & { marine_life?: string }
 export function DiveMap() {
     const [selectedSite, setSelectedSite] = useState<DiveSiteWithMarineLife | null>(null)
     const [diveSites, setDiveSites] = useState<DiveSite[]>([])
-    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false)
+    const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(true)
     const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false)
     const [searchOpen, setSearchOpen] = useState(false)
 
@@ -430,13 +430,12 @@ export function DiveMap() {
 
             {/* Relative container for map and controls */}
             <div style={{ position: "relative", width: "100%", height: "100%", zIndex: 1 }}>
-            {searchOpen && (
-                <SearchBar
-                    searchQuery={searchQuery}
-                    onSearchChange={setSearchQuery}
-                    onToggleFilters={() => setShowFilters(!showFilters)}
-                />
-            )}
+            {/* Search bar — always visible on Explore */}
+            <SearchBar
+                searchQuery={searchQuery}
+                onSearchChange={setSearchQuery}
+                onToggleFilters={() => setShowFilters(!showFilters)}
+            />
 
             {isSpeciesBrowserOpen && (
                 <SpeciesBrowser
