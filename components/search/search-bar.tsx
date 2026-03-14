@@ -17,13 +17,9 @@ export function SearchBar({
 }: SearchBarProps) {
     return (
         <>
-            {/* Subtle aqua glow pulse keyframe injected inline */}
+            {/* Placeholder color style */}
             <style>{`
-                @keyframes search-glow-breathe {
-                    0%, 100% { box-shadow: 0 0 0 1px rgba(0,194,215,0.10), 0 8px 32px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.05); }
-                    50%       { box-shadow: 0 0 0 1px rgba(0,194,215,0.22), 0 8px 36px rgba(0,0,0,0.50), 0 0 22px rgba(0,194,215,0.10), inset 0 1px 0 rgba(255,255,255,0.07); }
-                }
-                .search-input::placeholder { color: rgba(255,255,255,0.38); }
+                .search-input::placeholder { color: rgba(255,255,255,0.4); }
             `}</style>
 
             <div
@@ -39,35 +35,51 @@ export function SearchBar({
                     pointerEvents: "none",
                 }}
             >
-                {/* Outer frosted wrap — very subtle, purely depth */}
+                {/* 3D Bubble Glass Search Bar */}
                 <div
                     style={{
                         width: "100%",
                         maxWidth: "500px",
-                        padding: "4px",
+                        display: "flex",
+                        alignItems: "center",
+                        gap: "10px",
+                        padding: "14px 18px",
                         borderRadius: "9999px",
-                        background: "rgba(4, 28, 44, 0.28)",
-                        backdropFilter: "blur(6px)",
-                        WebkitBackdropFilter: "blur(6px)",
-                        border: "1px solid rgba(0, 194, 215, 0.09)",
+                        background: "radial-gradient(ellipse 120% 80% at 50% 0%, rgba(255,255,255,0.22) 0%, rgba(0,194,215,0.12) 25%, rgba(6,43,61,0.55) 60%, rgba(4,28,44,0.7) 100%)",
+                        backdropFilter: "blur(16px)",
+                        WebkitBackdropFilter: "blur(16px)",
+                        border: "1.5px solid rgba(0, 194, 215, 0.35)",
+                        boxShadow: [
+                            "0 0 20px rgba(0, 194, 215, 0.4)",
+                            "0 0 40px rgba(0, 194, 215, 0.2)",
+                            "0 8px 32px rgba(0, 0, 0, 0.5)",
+                            "inset 0 2px 4px rgba(255, 255, 255, 0.15)",
+                            "inset 0 -1px 2px rgba(0, 0, 0, 0.2)",
+                        ].join(", "),
                         pointerEvents: "auto",
+                        transition: "all 0.3s ease-out",
+                    }}
+                    onMouseEnter={(e) => {
+                        e.currentTarget.style.boxShadow = [
+                            "0 0 28px rgba(0, 194, 215, 0.55)",
+                            "0 0 56px rgba(0, 194, 215, 0.3)",
+                            "0 8px 32px rgba(0, 0, 0, 0.5)",
+                            "inset 0 2px 4px rgba(255, 255, 255, 0.18)",
+                            "inset 0 -1px 2px rgba(0, 0, 0, 0.2)",
+                        ].join(", ")
+                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.5)"
+                    }}
+                    onMouseLeave={(e) => {
+                        e.currentTarget.style.boxShadow = [
+                            "0 0 20px rgba(0, 194, 215, 0.4)",
+                            "0 0 40px rgba(0, 194, 215, 0.2)",
+                            "0 8px 32px rgba(0, 0, 0, 0.5)",
+                            "inset 0 2px 4px rgba(255, 255, 255, 0.15)",
+                            "inset 0 -1px 2px rgba(0, 0, 0, 0.2)",
+                        ].join(", ")
+                        e.currentTarget.style.borderColor = "rgba(0, 194, 215, 0.35)"
                     }}
                 >
-                    {/* Inner pill — main glass surface */}
-                    <div
-                        style={{
-                            display: "flex",
-                            alignItems: "center",
-                            gap: "10px",
-                            background: "rgba(6, 43, 61, 0.55)",
-                            backdropFilter: "blur(18px)",
-                            WebkitBackdropFilter: "blur(18px)",
-                            borderRadius: "9999px",
-                            border: "1px solid rgba(0, 194, 215, 0.18)",
-                            padding: "11px 16px",
-                            animation: "search-glow-breathe 6s ease-in-out infinite",
-                        }}
-                    >
                         {/* Search icon */}
                         <Search
                             size={18}
@@ -133,7 +145,6 @@ export function SearchBar({
                         >
                             <SlidersHorizontal size={18} color="rgba(0, 194, 215, 0.8)" strokeWidth={1.8} />
                         </button>
-                    </div>
                 </div>
             </div>
         </>
