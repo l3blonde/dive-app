@@ -84,45 +84,44 @@ export function BottomNav({ activeTab, onTabChange, onSearchOpen, searchOpen }: 
             <div
                 style={{
                     display: "flex",
-                    background: "rgba(6, 43, 61, 0.4)",
-                    backdropFilter: "blur(16px)",
-                    WebkitBackdropFilter: "blur(16px)",
-                    border: "1px solid rgba(0, 194, 215, 0.15)",
+                    width: "100%",
+                    background: "rgba(6, 43, 61, 0.55)",
+                    backdropFilter: "blur(20px)",
+                    WebkitBackdropFilter: "blur(20px)",
+                    border: "1px solid rgba(0, 194, 215, 0.18)",
                     borderRadius: "32px",
                     padding: "8px 12px",
-                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05)",
+                    boxShadow: "0 8px 32px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0,194,215,0.06), inset 0 1px 0 rgba(255, 255, 255, 0.07)",
                     justifyContent: "space-around",
+                    alignItems: "center",
                     gap: "4px",
-                    maxWidth: "100%",
                 }}
             >
                 {NAV_TABS.map((tab) => {
                     const isActive = activeTab === tab.id
-                    const iconColor = isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.5)"
-                    const textColor = isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.5)"
-                    
+                    const iconColor = isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.45)"
+                    const textColor = isActive ? "#00C2D7" : "rgba(255, 255, 255, 0.45)"
+
                     return (
                         <button
                             key={tab.id}
                             onClick={() => onTabChange(tab.id)}
                             style={{
+                                flex: 1,
                                 display: "flex",
                                 flexDirection: "column",
                                 alignItems: "center",
                                 justifyContent: "center",
-                                gap: "3px",
-                                background: isActive
-                                    ? "rgba(0, 194, 215, 0.2)"
-                                    : "transparent",
-                                border: isActive ? "1px solid rgba(0, 194, 215, 0.5)" : "1px solid transparent",
+                                gap: "4px",
+                                background: isActive ? "rgba(0, 194, 215, 0.18)" : "transparent",
+                                border: isActive ? "1px solid rgba(0, 194, 215, 0.45)" : "1px solid transparent",
                                 cursor: "pointer",
-                                padding: isActive ? "7px 20px" : "7px 10px",
+                                padding: "8px 4px",
                                 borderRadius: "9999px",
                                 transition: "all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1)",
                                 boxShadow: isActive
-                                    ? "0 0 16px rgba(0, 194, 215, 0.5), 0 0 32px rgba(0, 194, 215, 0.25), inset 0 0 12px rgba(0, 194, 215, 0.1)"
+                                    ? "0 0 14px rgba(0, 194, 215, 0.45), 0 0 28px rgba(0, 194, 215, 0.2), inset 0 0 10px rgba(0, 194, 215, 0.08)"
                                     : "none",
-                                minWidth: isActive ? "72px" : "48px",
                             }}
                             onMouseEnter={(e) => {
                                 if (!isActive) {
