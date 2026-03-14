@@ -19,7 +19,7 @@ export function SearchBar({
         <>
             {/* Placeholder color style */}
             <style>{`
-                .search-input::placeholder { color: rgba(255,255,255,0.4); }
+                .search-input::placeholder { color: rgba(255,255,255,0.55); }
             `}</style>
 
             <div
@@ -86,7 +86,7 @@ export function SearchBar({
                         {/* Search icon */}
                         <Search
                             size={18}
-                            color="rgba(0, 194, 215, 0.7)"
+                            color="rgba(255, 255, 255, 0.85)"
                             strokeWidth={1.8}
                             style={{ flexShrink: 0 }}
                         />
@@ -146,7 +146,7 @@ export function SearchBar({
                             title="Filters"
                             aria-label="Open filters"
                         >
-                            <SlidersHorizontal size={18} color="rgba(0, 194, 215, 0.8)" strokeWidth={1.8} />
+                            <SlidersHorizontal size={18} color="rgba(255, 255, 255, 0.85)" strokeWidth={1.8} />
                         </button>
                 </div>
             </div>

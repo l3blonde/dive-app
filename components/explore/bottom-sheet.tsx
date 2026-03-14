@@ -5,7 +5,6 @@ import { Bookmark, Star, SlidersHorizontal } from "lucide-react"
 import type { DiveSite } from "@/lib/types"
 import { DiveTripCard, type DiveTrip } from "@/components/trips/dive-trip-card"
 import { SortDropdown, type SortOption } from "@/components/search/sort-dropdown"
-import { FilterPanel, type FilterState } from "@/components/search/filter-panel"
 
 interface BottomSheetProps {
     diveSites: DiveSite[]
@@ -15,6 +14,13 @@ interface BottomSheetProps {
     onAddToPlan?: (site: DiveSite) => void
     onViewTripDetails?: (trip: DiveTrip) => void
     onAddTripToPlan?: (trip: DiveTrip) => void
+    activeContentType: "Dive Sites" | "Dive Trips" | "Marine Life"
+    onContentTypeChange: (type: "Dive Sites" | "Dive Trips" | "Marine Life") => void
+    isNearbyActive: boolean
+    onNearbyChange: (active: boolean) => void
+    sortOption: string
+    onSortChange: (option: string) => void
+    onFilterClick: () => void
 }
 
 type ContentType = "Dive Sites" | "Dive Trips" | "Marine Life"
@@ -82,20 +88,16 @@ export function BottomSheet({
     onAddToPlan,
     onViewTripDetails,
     onAddTripToPlan,
+    activeContentType,
+    onContentTypeChange,
+    isNearbyActive,
+    onNearbyChange,
+    sortOption,
+    onSortChange,
+    onFilterClick,
 }: BottomSheetProps) {
-    const [activeContent, setActiveContent] = useState<ContentType>("Dive Sites")
-    const [isNearby, setIsNearby] = useState(true)
-    const [sortOption, setSortOption] = useState<SortOption>("distance")
     const [sheetHeight, setSheetHeight] = useState<"collapsed" | "half" | "full">("half")
     const [dragStart, setDragStart] = useState(0)
-    const [isFilterOpen, setIsFilterOpen] = useState(false)
-    const [filters, setFilters] = useState<FilterState>({
-        depthRange: [0, 60],
-        difficulty: [],
-        distanceRadius: 100,
-        tripType: [],
-        priceRange: [0, 5000],
-    })
 
     const handleDragStart = (e: React.TouchEvent | React.MouseEvent) => {
         const clientY = "touches" in e ? e.touches[0].clientY : (e as React.MouseEvent).clientY
@@ -223,7 +225,7 @@ export function BottomSheet({
                 >
                     {/* Filter Icon Button */}
                     <button
-                        onClick={() => setIsFilterOpen(true)}
+                        onClick={onFilterClick}
                         style={{
                             width: "40px",
                             height: "40px",
@@ -266,12 +268,12 @@ export function BottomSheet({
                     </button>
 
                     {/* Sort Dropdown */}
-                    <SortDropdown value={sortOption} onChange={setSortOption} />
+                    <SortDropdown value={sortOption} onChange={onSortChange} />
 
                     {/* Nearby Toggle */}
                     <button
-                        onClick={() => setIsNearby(!isNearby)}
-                        style={chipStyle(isNearby)}
+                        onClick={() => onNearbyChange(!isNearbyActive)}
+                        style={chipStyle(isNearbyActive)}
                     >
                         Nearby
                     </button>
@@ -280,8 +282,8 @@ export function BottomSheet({
                     {CONTENT_CHIPS.map((chip) => (
                         <button
                             key={chip}
-                            onClick={() => setActiveContent(chip)}
-                            style={chipStyle(activeContent === chip)}
+                            onClick={() => onContentTypeChange(chip)}
+                            style={chipStyle(activeContentType === chip)}
                         >
                             {chip}
                         </button>
@@ -304,7 +306,7 @@ export function BottomSheet({
                             textShadow: "0 0 8px rgba(0, 194, 215, 0.4)",
                         }}
                     >
-                        {getContentCount()} {activeContent.toLowerCase()}
+                        {getContentCount()} {activeContentType.toLowerCase()}
                     </span>
                 </div>
 
@@ -321,7 +323,7 @@ export function BottomSheet({
                     className="hide-scrollbar"
                 >
                     {/* Dive Sites */}
-                    {activeContent === "Dive Sites" && diveSites.map((site) => (
+                    {activeContentType === "Dive Sites" && diveSites.map((site) => (
                         <DiveSiteCard
                             key={site.id}
                             site={site}
@@ -331,7 +333,7 @@ export function BottomSheet({
                     ))}
 
                     {/* Dive Trips */}
-                    {activeContent === "Dive Trips" && diveTrips.map((trip) => (
+                    {activeContentType === "Dive Trips" && diveTrips.map((trip) => (
                         <DiveTripCard
                             key={trip.id}
                             trip={trip}
@@ -341,7 +343,7 @@ export function BottomSheet({
                     ))}
 
                     {/* Marine Life - Placeholder */}
-                    {activeContent === "Marine Life" && (
+                    {activeContentType === "Marine Life" && (
                         <div style={{ 
                             padding: "40px 20px", 
                             textAlign: "center",
@@ -353,14 +355,6 @@ export function BottomSheet({
                     )}
                 </div>
             </div>
-
-            {/* Filter Panel */}
-            <FilterPanel
-                isOpen={isFilterOpen}
-                onClose={() => setIsFilterOpen(false)}
-                filters={filters}
-                onApply={setFilters}
-            />
         </>
     )
 }

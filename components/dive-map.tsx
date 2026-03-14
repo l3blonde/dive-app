@@ -43,6 +43,10 @@ export function DiveMap() {
         tripType: [],
         priceRange: [0, 5000],
     })
+    // New state for bottom sheet content control
+    const [activeContentType, setActiveContentType] = useState<"Dive Sites" | "Dive Trips" | "Marine Life">("Dive Sites")
+    const [isNearbyActive, setIsNearbyActive] = useState(false)
+    const [sortOption, setSortOption] = useState<string>("rating")
     const [activeTab, setActiveTab] = useState("map")
     const mapRef = useRef<MapRef | null>(null)
     const [currentCardIndex, setCurrentCardIndex] = useState(0)
@@ -443,7 +447,10 @@ export function DiveMap() {
             <SearchBar
                 searchQuery={searchQuery}
                 onSearchChange={setSearchQuery}
-                onToggleFilters={() => setIsFilterPanelOpen(true)}
+                onToggleFilters={() => {
+                    setIsBottomSheetOpen(true)
+                    setIsFilterPanelOpen(true)
+                }}
             />
 
             {isSpeciesBrowserOpen && (
@@ -679,11 +686,18 @@ export function DiveMap() {
             )}
 
             {isBottomSheetOpen && filteredDiveSites.length > 0 && (
-<BottomSheet
+                <BottomSheet
                     diveSites={filteredDiveSites}
                     onClose={() => setIsBottomSheetOpen(false)}
                     onViewDetails={(site) => handleDiveSiteSelect(site as DiveSiteWithMarineLife)}
                     onAddToPlan={(site) => console.log("Add to plan:", site.name)}
+                    activeContentType={activeContentType}
+                    onContentTypeChange={setActiveContentType}
+                    isNearbyActive={isNearbyActive}
+                    onNearbyChange={setIsNearbyActive}
+                    sortOption={sortOption}
+                    onSortChange={setSortOption}
+                    onFilterClick={() => setIsFilterPanelOpen(true)}
                 />
             )}
 
